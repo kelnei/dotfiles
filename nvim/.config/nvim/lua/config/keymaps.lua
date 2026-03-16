@@ -1,9 +1,5 @@
 local map = vim.keymap.set
 
--- leader key
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
-
 -- better up/down on wrapped lines
 map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
