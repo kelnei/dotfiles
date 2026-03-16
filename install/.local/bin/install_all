@@ -18,9 +18,10 @@ run install_bun
 run install_gh
 run install_aws
 
-# fnm must come before claude (npm dependency)
+# fnm must come before claude and codex (npm dependency)
 run install_fnm
 run install_claude
+run install_codex
 
 run install_opencode
 
