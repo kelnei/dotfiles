@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "Installing latest bun..."
+BUN_INSTALL="$HOME/.local" curl -fsSL https://bun.sh/install | bash
+
+echo "bun $(~/.local/bin/bun --version) installed"

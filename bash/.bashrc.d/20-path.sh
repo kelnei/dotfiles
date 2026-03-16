@@ -1,5 +1,6 @@
-# Local user binaries (e.g. starship)
+# Local user binaries (e.g. starship, bun)
 export PATH="$HOME/.local/bin:$PATH"
+export BUN_INSTALL="$HOME/.local"
 
 # Go
 export PATH="$HOME/.local/go/bin:$PATH"
