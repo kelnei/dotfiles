@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# prompt for sudo credentials upfront
+sudo -v
+
+echo "Installing latest 1Password CLI (op)..."
+curl -fsSL "https://downloads.1password.com/linux/debian/amd64/stable/1password-cli-amd64-latest.deb" -o /tmp/op.deb
+sudo dpkg -i /tmp/op.deb
+rm /tmp/op.deb
+
+echo "op $(op --version) installed"
+echo "Open the 1Password app and enable Settings > Developer > Integrate with 1Password CLI"
