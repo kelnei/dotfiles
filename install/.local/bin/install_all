@@ -25,6 +25,7 @@ run install_codex
 
 run install_opencode
 run install_neovim
+run install_ghostty
 
 echo ""
 echo "All tools installed successfully."

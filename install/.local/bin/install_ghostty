@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "Installing latest ghostty..."
+sudo snap install ghostty --classic
+
+echo "ghostty $(ghostty --version) installed"
