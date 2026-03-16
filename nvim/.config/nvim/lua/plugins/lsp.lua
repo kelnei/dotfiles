@@ -11,9 +11,9 @@ return {
     dependencies = { "williamboman/mason.nvim" },
     opts = {
       ensure_installed = {
-        "ts_ls",        -- TypeScript/JavaScript
-        "pyright",      -- Python
-        "lua_ls",       -- Lua
+        "ts_ls",   -- TypeScript/JavaScript
+        "pyright", -- Python
+        "lua_ls",  -- Lua
       },
       automatic_installation = true,
     },
@@ -28,31 +28,39 @@ return {
       "hrsh7th/cmp-nvim-lsp",
     },
     config = function()
-      local lspconfig = require("lspconfig")
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-      local on_attach = function(_, bufnr)
-        local map = function(keys, func, desc)
-          vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
-        end
+      -- keymaps attached when an lsp server connects to a buffer
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(event)
+          local map = function(keys, func, desc)
+            vim.keymap.set("n", keys, func, { buffer = event.buf, desc = desc })
+          end
 
-        map("gd", vim.lsp.buf.definition, "Go to definition")
-        map("gD", vim.lsp.buf.declaration, "Go to declaration")
-        map("gr", vim.lsp.buf.references, "Go to references")
-        map("gi", vim.lsp.buf.implementation, "Go to implementation")
-        map("K", vim.lsp.buf.hover, "Hover documentation")
-        map("<leader>rn", vim.lsp.buf.rename, "Rename symbol")
-        map("<leader>ca", vim.lsp.buf.code_action, "Code action")
-        map("<leader>f", function() vim.lsp.buf.format({ async = true }) end, "Format buffer")
-      end
+          map("gd", vim.lsp.buf.definition, "Go to definition")
+          map("gD", vim.lsp.buf.declaration, "Go to declaration")
+          map("gr", vim.lsp.buf.references, "Go to references")
+          map("gi", vim.lsp.buf.implementation, "Go to implementation")
+          map("K", vim.lsp.buf.hover, "Hover documentation")
+          map("<leader>rn", vim.lsp.buf.rename, "Rename symbol")
+          map("<leader>ca", vim.lsp.buf.code_action, "Code action")
+          map("<leader>f", function() vim.lsp.buf.format({ async = true }) end, "Format buffer")
+        end,
+      })
 
-      local servers = { "ts_ls", "pyright", "lua_ls" }
-      for _, server in ipairs(servers) do
-        lspconfig[server].setup({
-          capabilities = capabilities,
-          on_attach = on_attach,
-        })
-      end
+      -- configure servers via the new vim.lsp.config API
+      vim.lsp.config("*", { capabilities = capabilities })
+
+      vim.lsp.config("lua_ls", {
+        settings = {
+          Lua = {
+            diagnostics = { globals = { "vim" } },
+            workspace = { checkThirdParty = false },
+          },
+        },
+      })
+
+      vim.lsp.enable({ "ts_ls", "pyright", "lua_ls" })
     end,
   },
 
