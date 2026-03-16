@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+REPO_DIR="$HOME/code/neovim"
+
+# prompt for sudo credentials upfront
+sudo -v
+
+if [ -d "$REPO_DIR" ]; then
+    echo "Existing neovim repo found, cleaning up..."
+    cd "$REPO_DIR"
+    make distclean || true
+    git tag -d $(git tag) 2>/dev/null || true
+    git fetch --tags
+else
+    echo "Cloning neovim..."
+    git clone https://github.com/neovim/neovim "$REPO_DIR"
+    cd "$REPO_DIR"
+fi
+
+echo "Checking out stable..."
+git checkout stable
+
+echo "Installing build dependencies..."
+sudo apt-get install -y ninja-build gettext cmake curl build-essential
+
+echo "Building neovim..."
+make CMAKE_BUILD_TYPE=RelWithDebInfo
+
+echo "Installing neovim..."
+cd build
+cpack -G DEB
+sudo dpkg -i nvim-linux-x86_64.deb
+
+echo "nvim $(nvim --version | head -1) installed"
