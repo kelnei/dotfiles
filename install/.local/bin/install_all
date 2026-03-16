@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+run() {
+    echo ""
+    echo "==> $1"
+    "$SCRIPT_DIR/$1"
+}
+
+# Base tools
+run install_starship
+run install_go
+run install_rust
+run install_uv
+run install_bun
+run install_gh
+run install_aws
+
+# fnm must come before claude (npm dependency)
+run install_fnm
+run install_claude
+
+run install_opencode
+
+echo ""
+echo "All tools installed successfully."
