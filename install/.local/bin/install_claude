@@ -2,6 +2,6 @@
 set -euo pipefail
 
 echo "Installing latest claude code..."
-BUN_INSTALL="$HOME/.local" bun install -g @anthropic-ai/claude-code
+npm install -g @anthropic-ai/claude-code
 
-echo "claude $("$HOME/.local/bin/claude" --version) installed"
+echo "claude $(claude --version) installed"
