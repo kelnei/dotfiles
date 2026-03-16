@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "Installing latest Proton Pass CLI..."
+curl -fsSL https://proton.me/download/pass-cli/install.sh | bash
+
+echo "pass-cli $(pass-cli --version) installed"
+echo "Run 'pass-cli login' to authenticate with your Proton account"
