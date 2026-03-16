@@ -1,6 +1,9 @@
 # Local user binaries (e.g. starship)
 export PATH="$HOME/.local/bin:$PATH"
 
+# Rust
+export PATH="$HOME/.cargo/bin:$PATH"
+
 # opencode
 export PATH="$HOME/.opencode/bin:$PATH"
 
