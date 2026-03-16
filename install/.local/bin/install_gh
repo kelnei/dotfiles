@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+INSTALL_DIR="$HOME/.local/bin"
+
+echo "Fetching latest gh release..."
+LATEST=$(curl -fsSL https://api.github.com/repos/cli/cli/releases/latest | grep '"tag_name"' | cut -d'"' -f4)
+VERSION="${LATEST#v}"
+
+echo "Installing gh $VERSION..."
+curl -fsSL "https://github.com/cli/cli/releases/download/${LATEST}/gh_${VERSION}_linux_amd64.tar.gz" \
+  | tar -xz -C /tmp
+mv "/tmp/gh_${VERSION}_linux_amd64/bin/gh" "$INSTALL_DIR/gh"
+rm -rf "/tmp/gh_${VERSION}_linux_amd64"
+
+echo "gh $("$INSTALL_DIR/gh" --version | head -1) installed to $INSTALL_DIR/gh"

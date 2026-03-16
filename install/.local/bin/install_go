@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+INSTALL_DIR="$HOME/.local/go"
+
+echo "Fetching latest Go release..."
+LATEST=$(curl -fsSL https://golang.org/VERSION?m=text | head -1)
+
+echo "Installing $LATEST..."
+curl -fsSL "https://go.dev/dl/${LATEST}.linux-amd64.tar.gz" \
+  | tar -xz -C /tmp
+rm -rf "$INSTALL_DIR"
+mv /tmp/go "$INSTALL_DIR"
+
+echo "$("$INSTALL_DIR/bin/go" version) installed to $INSTALL_DIR"

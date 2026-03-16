@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+INSTALL_DIR="$HOME/.local/bin"
+
+echo "Installing latest starship..."
+curl -fsSL https://starship.rs/install.sh | sh -s -- --yes --bin-dir "$INSTALL_DIR"
+
+echo "starship $("$INSTALL_DIR/starship" --version) installed to $INSTALL_DIR/starship"

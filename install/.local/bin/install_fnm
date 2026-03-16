@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+INSTALL_DIR="$HOME/.local/bin"
+
+echo "Installing latest fnm..."
+curl -fsSL https://fnm.vercel.app/install | bash -s -- --install-dir "$INSTALL_DIR" --skip-shell
+
+echo "fnm $("$INSTALL_DIR/fnm" --version) installed to $INSTALL_DIR/fnm"
