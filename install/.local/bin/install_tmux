@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# prompt for sudo credentials upfront
+sudo -v
+
+echo "Installing latest tmux..."
+sudo apt-get install -y tmux
+
+# install TPM (tmux plugin manager)
+TPM_DIR="$HOME/.tmux/plugins/tpm"
+if [ ! -d "$TPM_DIR" ]; then
+    echo "Installing TPM..."
+    git clone https://github.com/tmux-plugins/tpm "$TPM_DIR"
+else
+    echo "TPM already installed, updating..."
+    git -C "$TPM_DIR" pull
+fi
+
+echo "tmux $(tmux -V) installed"
+echo "Launch tmux and press Ctrl+Space I to install plugins"
