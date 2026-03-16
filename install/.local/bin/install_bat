@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# prompt for sudo credentials upfront
+sudo -v
+
+echo "Fetching latest bat release..."
+LATEST=$(curl -fsSL https://api.github.com/repos/sharkdp/bat/releases/latest | grep '"tag_name"' | cut -d'"' -f4)
+VERSION="${LATEST#v}"
+
+echo "Installing bat ${LATEST}..."
+curl -fsSL "https://github.com/sharkdp/bat/releases/download/${LATEST}/bat_${VERSION}_amd64.deb" -o /tmp/bat.deb
+sudo dpkg -i /tmp/bat.deb
+rm /tmp/bat.deb
+
+echo "bat $(batcat --version) installed"

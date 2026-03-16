@@ -16,6 +16,37 @@ alias l='ls -CF'
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
+# git
+alias gg='git grep'
+alias gs='git status'
+alias gd='git diff'
+alias gl='git log --oneline --graph --decorate'
+alias gp='git push'
+alias gpl='git pull'
+alias gco='git checkout'
+alias gcb='git checkout -b'
+alias gca='git commit --amend'
+
+# navigation
+alias ..='cd ..'
+alias ...='cd ../..'
+alias '~'='cd ~'
+alias code='cd ~/code'
+
+# utilities
+alias cls='clear'
+alias path='echo $PATH | tr ":" "\n"'
+alias ports='ss -tulnp'
+
+# ripgrep and bat (if installed)
+if command -v rg &>/dev/null; then
+    alias grep='rg'
+fi
+if command -v batcat &>/dev/null; then
+    alias bat='batcat'
+    alias cat='batcat'
+fi
+
 # Source ~/.bash_aliases if it exists
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases

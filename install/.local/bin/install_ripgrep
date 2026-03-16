@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# prompt for sudo credentials upfront
+sudo -v
+
+echo "Fetching latest ripgrep release..."
+LATEST=$(curl -fsSL https://api.github.com/repos/BurntSushi/ripgrep/releases/latest | grep '"tag_name"' | cut -d'"' -f4)
+
+echo "Installing ripgrep ${LATEST}..."
+curl -fsSL "https://github.com/BurntSushi/ripgrep/releases/download/${LATEST}/ripgrep_${LATEST}-1_amd64.deb" -o /tmp/ripgrep.deb
+sudo dpkg -i /tmp/ripgrep.deb
+rm /tmp/ripgrep.deb
+
+echo "rg $(rg --version | head -1) installed"

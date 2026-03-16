@@ -17,6 +17,8 @@ run install_uv
 run install_bun
 run install_gh
 run install_aws
+run install_ripgrep
+run install_bat
 
 # fnm must come before claude and codex (npm dependency)
 run install_fnm
