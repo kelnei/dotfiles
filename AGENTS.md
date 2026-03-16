@@ -4,6 +4,21 @@ Guidelines for agentic coding agents working in this repository.
 
 ---
 
+## Security: No Secrets
+
+This is a **public repository**. Never commit secrets of any kind, including:
+
+- API keys, tokens, or credentials
+- Passwords or passphrases
+- Private SSH keys or certificates
+- Environment variables containing sensitive values
+
+If a tool requires credentials at runtime, it must read them from outside the repo
+(e.g. environment variables set manually, a secrets manager, or `~/.config/<tool>/credentials`
+that is not tracked here). Never add such files to a stow package.
+
+---
+
 ## Repository Overview
 
 A personal dotfiles repository managed with [GNU Stow](https://www.gnu.org/software/stow/).
