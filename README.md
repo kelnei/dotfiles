@@ -7,32 +7,43 @@ Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/).
 | Package | Maps to |
 |---|---|
 | `bash` | `~/.bashrc`, `~/.bashrc.d/` |
-| `git` | `~/.gitconfig` |
+| `git` | `~/.gitconfig`, `~/.gitignore` |
+| `ghostty` | `~/.config/ghostty/config` |
 | `install` | `~/.local/bin/install_*` |
+| `nvim` | `~/.config/nvim/` |
 | `starship` | `~/.config/starship.toml` |
+| `tmux` | `~/.tmux.conf` |
 
 ## Setup
 
-### 1. Clone the repo
+### 1. Install dependencies
+
+```bash
+sudo apt-get install -y git stow
+```
+
+### 2. Clone the repo
 
 ```bash
 git clone git@github.com:kelnei/dotfiles.git ~/.dotfiles
 ```
 
-### 2. Stow the packages
+### 3. Stow the packages
 
 ```bash
 cd ~/.dotfiles
-stow git bash starship install
+stow git bash starship ghostty nvim tmux install
 ```
 
-### 3. Install tools
+### 4. Install tools
 
 ```bash
 install_all
 ```
 
-This installs: starship, go, rust, uv, bun, gh, aws, fnm, claude, and opencode.
+This installs: starship, go, rust, uv, bun, gh, aws, ripgrep, bat, 1password, op, gopass, proton-pass, fnm, claude, codex, opencode, neovim, ghostty, and tmux.
+
+After installing tmux, launch it and press `Ctrl+Space I` to install plugins.
 
 ## Adding a New Tool
 

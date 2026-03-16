@@ -28,9 +28,12 @@ directory tree mirrors `$HOME` exactly. Stowing a package creates symlinks in `$
 ```
 ~/.dotfiles/
   bash/        -> ~/.bashrc, ~/.bashrc.d/
-  git/         -> ~/.gitconfig
+  git/         -> ~/.gitconfig, ~/.gitignore
+  ghostty/     -> ~/.config/ghostty/config
   install/     -> ~/.local/bin/install_*
+  nvim/        -> ~/.config/nvim/
   starship/    -> ~/.config/starship.toml
+  tmux/        -> ~/.tmux.conf
 ```
 
 To stow a package:
@@ -40,7 +43,7 @@ stow --dir=$HOME/.dotfiles --target=$HOME <package>
 
 To restow all packages after adding files:
 ```bash
-stow --dir=$HOME/.dotfiles --target=$HOME --restow bash git install starship
+stow --dir=$HOME/.dotfiles --target=$HOME --restow bash git ghostty install nvim starship tmux
 ```
 
 ---
@@ -84,7 +87,7 @@ Files are numbered with a two-digit prefix to control load order:
 | Prefix | Purpose |
 |---|---|
 | `00` | Guards and prerequisites (interactivity check) |
-| `10` | Shell behavior (history) |
+| `10` | Shell behavior and directory bootstrap (history, `~/code`) |
 | `20` | Environment setup — PATH exports, env variables |
 | `30` | Prompt |
 | `40` | Aliases |
@@ -186,8 +189,6 @@ export PATH="$HOME/.local/bin:$PATH" # add local bin to PATH
 4. Add the new install script to `install_all` in dependency order
 5. Restow affected packages
 6. Commit each logical change separately
-
----
 
 ---
 
