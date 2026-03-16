@@ -24,6 +24,7 @@ run install_claude
 run install_codex
 
 run install_opencode
+run install_neovim
 
 echo ""
 echo "All tools installed successfully."
