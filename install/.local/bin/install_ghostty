@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# prompt for sudo credentials upfront
+sudo -v
+
 echo "Installing latest ghostty..."
-sudo snap install ghostty --classic
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mkasberg/ghostty-ubuntu/HEAD/install.sh)"
 
 echo "ghostty $(ghostty --version) installed"
