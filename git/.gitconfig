@@ -1,0 +1,20 @@
+[user]
+  name = Matt Linscott
+  email = 744765+kelnei@users.noreply.github.com
+[core]
+  editor = nvim
+  excludesfile = ~/.gitignore
+[pull]
+  rebase = false
+  ff = only
+[push]
+  default = current
+[color]
+  ui = auto
+[init]
+  defaultBranch = main
+[filter "lfs"]
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
