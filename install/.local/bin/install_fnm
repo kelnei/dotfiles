@@ -6,4 +6,12 @@ INSTALL_DIR="$HOME/.local/bin"
 echo "Installing latest fnm..."
 curl -fsSL https://fnm.vercel.app/install | bash -s -- --install-dir "$INSTALL_DIR" --skip-shell
 
+# initialize fnm in the current shell so node/npm are available to callers
+source "$HOME/.bashrc.d/50-fnm.sh"
+
+echo "Installing node LTS..."
+fnm install --lts
+fnm alias default lts-latest
+fnm use default
+
 echo "fnm $("$INSTALL_DIR/fnm" --version) installed to $INSTALL_DIR/fnm"

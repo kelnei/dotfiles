@@ -31,6 +31,7 @@ git clone git@github.com:kelnei/dotfiles.git ~/.dotfiles
 ### 3. Stow the packages
 
 ```bash
+mkdir -p ~/.local/bin
 cd ~/.dotfiles
 stow git bash starship ghostty nvim tmux install
 ```
