@@ -12,4 +12,4 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.opencode/bin:$PATH"
 
 # LM Studio CLI (lms)
-export PATH="$PATH:$HOME/.lmstudio/bin"
+export PATH="$HOME/.lmstudio/bin:$PATH"
