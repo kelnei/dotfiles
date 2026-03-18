@@ -38,6 +38,10 @@ alias cls='clear'
 alias path='echo $PATH | tr ":" "\n"'
 alias ports='ss -tulnp'
 
+# claude code accounts
+alias claude-personal='claude --config-dir ~/.claude-personal'
+alias claude-work='claude --config-dir ~/.claude-work'
+
 # ripgrep and bat (if installed)
 if command -v rg &>/dev/null; then
     alias grep='rg'
