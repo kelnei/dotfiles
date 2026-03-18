@@ -19,7 +19,7 @@ return {
         "markdown_inline",
         "html",
         "css",
-        "git_commit",
+        "gitcommit",
         "gitignore",
       },
       auto_install = true,
