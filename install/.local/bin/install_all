@@ -26,6 +26,11 @@ run install_proton_pass
 
 # fnm must come before claude and codex (npm dependency)
 run install_fnm
+
+# source fnm env and activate default node so npm is available to subsequent scripts
+eval "$(fnm env --shell bash)"
+fnm use default
+
 run install_claude
 run install_codex
 
