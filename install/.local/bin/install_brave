@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# prompt for sudo credentials upfront
+sudo -v
+
+echo "Installing latest Brave browser..."
+curl -fsS https://dl.brave.com/install.sh | sh
+
+echo "Brave $(brave-browser --version) installed"

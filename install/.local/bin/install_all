@@ -38,6 +38,7 @@ run install_opencode
 run install_neovim
 run install_ghostty
 run install_tmux
+run install_brave
 
 echo ""
 echo "All tools installed successfully."
