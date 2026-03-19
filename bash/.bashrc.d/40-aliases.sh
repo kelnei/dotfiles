@@ -33,7 +33,12 @@ alias ...='cd ../..'
 alias '~'='cd ~'
 alias code='cd ~/code'
 
+# tmux
+alias tn='tmux new -s'
+alias ta='tmux attach -t'
+
 # utilities
+alias vim='nvim'
 alias cls='clear'
 alias path='echo $PATH | tr ":" "\n"'
 alias ports='ss -tulnp'
