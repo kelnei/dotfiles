@@ -2,6 +2,6 @@
 set -euo pipefail
 
 echo "Installing latest claude code..."
-npm install -g @anthropic-ai/claude-code
+curl -fsSL https://claude.ai/install.sh | bash
 
 echo "claude $(claude --version) installed"
