@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ICON_DIR="/usr/share/icons/hicolor/256x256/apps"
+ICON_PATH="$ICON_DIR/lm-studio.png"
+DESKTOP_FILE="/usr/share/applications/lm-studio.desktop"
+
+# prompt for sudo credentials upfront
+sudo -v
+
+echo "Installing latest LM Studio..."
+curl -fsSL -o /tmp/lm-studio.deb "https://lmstudio.ai/download/latest/linux/x64?format=deb"
+sudo dpkg -i /tmp/lm-studio.deb
+rm /tmp/lm-studio.deb
+
+# fix broken icon placement (deb puts it in 0x0 instead of 256x256)
+sudo mkdir -p "$ICON_DIR"
+sudo mv /usr/share/icons/hicolor/0x0/apps/lm-studio.png "$ICON_PATH"
+sudo rmdir /usr/share/icons/hicolor/0x0/apps
+sudo rmdir /usr/share/icons/hicolor/0x0
+sudo update-icon-caches /usr/share/icons/hicolor
+
+# fix desktop entry to use absolute icon path
+sudo sed -i "s|^Icon=.*|Icon=$ICON_PATH|" "$DESKTOP_FILE"
+sudo update-desktop-database /usr/share/applications
+
+echo "lm-studio $(dpkg-query -W -f='${Version}' lm-studio) installed"
