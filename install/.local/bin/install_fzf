@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+INSTALL_DIR="$HOME/.local/bin"
+TMP_DIR=$(mktemp -d)
+
+echo "Fetching latest fzf release..."
+LATEST=$(curl -fsSL https://api.github.com/repos/junegunn/fzf/releases/latest | grep '"tag_name"' | cut -d'"' -f4)
+VERSION="${LATEST#v}"
+
+echo "Installing fzf $VERSION..."
+curl -fsSL "https://github.com/junegunn/fzf/releases/download/${LATEST}/fzf-${VERSION}-linux_amd64.tar.gz" \
+  | tar -xz -C "$TMP_DIR"
+mv "$TMP_DIR/fzf" "$INSTALL_DIR/fzf"
+rm -rf "$TMP_DIR"
+
+echo "fzf $($INSTALL_DIR/fzf --version) installed to $INSTALL_DIR/fzf"
