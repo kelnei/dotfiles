@@ -19,6 +19,7 @@ run install_gh
 run install_aws
 run install_ripgrep
 run install_bat
+run install_docker
 run install_1password
 run install_op
 run install_gopass
