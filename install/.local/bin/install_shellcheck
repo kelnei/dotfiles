@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+INSTALL_DIR="$HOME/.local/bin"
+TMP_DIR=$(mktemp -d)
+
+echo "Fetching latest shellcheck release..."
+LATEST=$(curl -fsSL https://api.github.com/repos/koalaman/shellcheck/releases/latest | grep '"tag_name"' | cut -d'"' -f4)
+VERSION="${LATEST#v}"
+
+echo "Installing shellcheck $VERSION..."
+curl -fsSL "https://github.com/koalaman/shellcheck/releases/download/${LATEST}/shellcheck-${LATEST}.linux.x86_64.tar.xz" \
+  | tar -xJ -C "$TMP_DIR"
+mv "$TMP_DIR/shellcheck-${LATEST}/shellcheck" "$INSTALL_DIR/shellcheck"
+rm -rf "$TMP_DIR"
+
+echo "shellcheck $($INSTALL_DIR/shellcheck --version | grep version:) installed to $INSTALL_DIR/shellcheck"
