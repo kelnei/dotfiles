@@ -39,6 +39,7 @@ alias ta='tmux attach -t'
 
 # utilities
 alias vim='nvim'
+alias vimdiff='nvim -d'
 alias cls='clear'
 alias path='echo $PATH | tr ":" "\n"'
 alias ports='ss -tulnp'
