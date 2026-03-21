@@ -17,6 +17,7 @@ run install_uv
 run install_bun
 run install_gh
 run install_aws
+run install_ssm
 run install_ripgrep
 run install_bat
 run install_docker
