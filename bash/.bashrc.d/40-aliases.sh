@@ -38,6 +38,7 @@ alias tn='tmux new -s'
 alias ta='tmux attach -t'
 
 # utilities
+alias fd='fdfind'
 alias vim='nvim'
 alias vimdiff='nvim -d'
 alias cls='clear'
