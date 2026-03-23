@@ -30,7 +30,7 @@ directory tree mirrors `$HOME` exactly. Stowing a package creates symlinks in `$
   bash/        -> ~/.bashrc, ~/.bashrc.d/
   git/         -> ~/.gitconfig, ~/.gitignore
   ghostty/     -> ~/.config/ghostty/config
-  install/     -> ~/.local/bin/install_*
+  install/     -> ~/.local/bin/install, ~/.local/share/install/recipes/*
   nvim/        -> ~/.config/nvim/
   starship/    -> ~/.config/starship.toml
   tmux/        -> ~/.tmux.conf
@@ -71,7 +71,7 @@ stow --dir=$HOME/.dotfiles --target=$HOME --simulate <package>
 - Package names are **single lowercase words** (e.g. `bash`, `git`, `install`, `starship`)
 - The directory tree inside each package **mirrors `$HOME` exactly**
 - New tools that write to `~/.config/` go in `<package>/.config/<tool>/config-file`
-- New tools that write scripts to `~/.local/bin/` go in `install/.local/bin/<script-name>`
+- New install recipes go in `install/.local/share/install/recipes/<recipe-name>`
 - After adding files to a package, restow it:
   ```bash
   stow --dir=$HOME/.dotfiles --target=$HOME --restow <package>
@@ -179,16 +179,24 @@ export PATH="$HOME/.local/bin:$PATH" # add local bin to PATH
 
 ## Adding a New Tool
 
-1. Create an install script in `install/.local/bin/install_<tool>`:
+1. Create a recipe in `install/.local/share/install/recipes/<tool>`:
    - Follow the install script pattern above
    - Use `curl -fsSL` and always install the latest version
    - Install binaries to `$HOME/.local/bin` where possible
 2. If the tool needs PATH or env vars, add them to `bash/.bashrc.d/20-path.sh`
 3. If the tool needs shell initialization (e.g. `eval "$(tool init bash)"`), create
    `bash/.bashrc.d/<prefix>-<tool>.sh` with the appropriate numeric prefix
-4. Add the new install script to `install_all` in dependency order
+4. Add the new recipe to the `all` recipe in dependency order
 5. Restow affected packages
 6. Commit each logical change separately
+
+Usage:
+```bash
+install <recipe>           # run one recipe
+install <recipe> [recipe]  # run multiple recipes
+install --list             # show available recipes
+install all                # run everything
+```
 
 ---
 

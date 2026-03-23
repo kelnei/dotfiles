@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+run() {
+    echo ""
+    echo "==> $1"
+    "$SCRIPT_DIR/$1"
+}
+
+# base tools
+run starship
+run go
+run rust
+run uv
+run bun
+run gh
+run aws
+run ssm
+run ripgrep
+run shellcheck
+run shfmt
+run fzf
+run bat
+run docker
+run 1password
+run op
+run gopass
+run proton_pass
+
+# fnm must come before claude and codex (npm dependency)
+run fnm
+
+# source fnm env and activate default node so npm is available to subsequent scripts
+eval "$(fnm env --shell bash)"
+fnm use default
+
+run claude
+run codex
+
+run opencode
+run neovim
+run ghostty
+run tmux
+run brave
+run lmstudio
+
+echo ""
+echo "All tools installed successfully."
