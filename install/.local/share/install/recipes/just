@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+INSTALL_DIR="$HOME/.local/bin"
+TMP_DIR=$(mktemp -d)
+
+echo "Fetching latest just release..."
+LATEST=$(curl -fsSL https://api.github.com/repos/casey/just/releases/latest | grep '"tag_name"' | cut -d'"' -f4)
+
+echo "Installing just $LATEST..."
+curl -fsSL "https://github.com/casey/just/releases/download/${LATEST}/just-${LATEST}-x86_64-unknown-linux-musl.tar.gz" \
+  | tar -xz -C "$TMP_DIR"
+mv "$TMP_DIR/just" "$INSTALL_DIR/just"
+rm -rf "$TMP_DIR"
+
+echo "just $($INSTALL_DIR/just --version) installed to $INSTALL_DIR/just"
