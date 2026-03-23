@@ -37,6 +37,9 @@ alias code='cd ~/code'
 alias tn='tmux new -s'
 alias ta='tmux attach -t'
 
+# dotfiles
+alias restow='stow --dir=$HOME/.dotfiles --target=$HOME --restow'
+
 # utilities
 alias fd='fdfind'
 alias vim='nvim'
