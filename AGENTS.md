@@ -64,6 +64,24 @@ install_gh
 stow --dir=$HOME/.dotfiles --target=$HOME --simulate <package>
 ```
 
+### Formatting
+
+`.sh` files are formatted with `shfmt`. A `.editorconfig` at the repo root configures
+2-space indentation and is picked up automatically when no CLI flags are passed.
+
+```bash
+# format all .sh files
+shfmt -w bash/.bashrc.d/
+```
+
+Install recipes have no `.sh` extension, so editorconfig is not applied automatically.
+Pass `-ln bash -i 2` explicitly:
+
+```bash
+# format install recipes
+shfmt -w -ln bash -i 2 install/.local/bin/install install/.local/share/install/recipes/
+```
+
 ---
 
 ## Stow Package Conventions

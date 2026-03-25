@@ -9,8 +9,8 @@ LATEST=$(curl -fsSL https://api.github.com/repos/junegunn/fzf/releases/latest | 
 VERSION="${LATEST#v}"
 
 echo "Installing fzf $VERSION..."
-curl -fsSL "https://github.com/junegunn/fzf/releases/download/${LATEST}/fzf-${VERSION}-linux_amd64.tar.gz" \
-  | tar -xz -C "$TMP_DIR"
+curl -fsSL "https://github.com/junegunn/fzf/releases/download/${LATEST}/fzf-${VERSION}-linux_amd64.tar.gz" |
+  tar -xz -C "$TMP_DIR"
 mv "$TMP_DIR/fzf" "$INSTALL_DIR/fzf"
 rm -rf "$TMP_DIR"
 

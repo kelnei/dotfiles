@@ -7,8 +7,8 @@ echo "Fetching latest Go release..."
 LATEST=$(curl -fsSL https://golang.org/VERSION?m=text | head -1)
 
 echo "Installing $LATEST..."
-curl -fsSL "https://go.dev/dl/${LATEST}.linux-amd64.tar.gz" \
-  | tar -xz -C /tmp
+curl -fsSL "https://go.dev/dl/${LATEST}.linux-amd64.tar.gz" |
+  tar -xz -C /tmp
 rm -rf "$INSTALL_DIR"
 mv /tmp/go "$INSTALL_DIR"
 

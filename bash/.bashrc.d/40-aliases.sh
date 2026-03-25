@@ -1,10 +1,10 @@
 # Enable color support of ls and handy aliases
 if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
+  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+  alias ls='ls --color=auto'
+  alias grep='grep --color=auto'
+  alias fgrep='fgrep --color=auto'
+  alias egrep='egrep --color=auto'
 fi
 
 # ls aliases
@@ -36,6 +36,7 @@ alias code='cd ~/code'
 # tmux
 alias tn='tmux new -s'
 alias ta='tmux attach -t'
+alias tl='tmux list-sessions'
 
 # dotfiles
 alias restow='stow --dir=$HOME/.dotfiles --target=$HOME --restow'
@@ -55,14 +56,14 @@ alias claude="echo 'Use claude-work or claude-personal'"
 
 # ripgrep and bat (if installed)
 if command -v rg &>/dev/null; then
-    alias grep='rg'
+  alias grep='rg'
 fi
 if command -v batcat &>/dev/null; then
-    alias bat='batcat'
-    alias cat='batcat'
+  alias bat='batcat'
+  alias cat='batcat'
 fi
 
 # Source ~/.bash_aliases if it exists
 if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+  . ~/.bash_aliases
 fi

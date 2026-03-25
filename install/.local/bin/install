@@ -4,47 +4,47 @@ set -euo pipefail
 RECIPE_DIR="$HOME/.local/share/install/recipes"
 
 usage() {
-    echo "Usage: install <recipe> [recipe ...]"
-    echo "       install --list"
-    echo ""
-    echo "Run install recipes for developer tools."
+  echo "Usage: install <recipe> [recipe ...]"
+  echo "       install --list"
+  echo ""
+  echo "Run install recipes for developer tools."
 }
 
 list_recipes() {
-    echo "Available recipes:"
-    for RECIPE in "$RECIPE_DIR"/*; do
-        [ -f "$RECIPE" ] && [ -x "$RECIPE" ] && echo "  $(basename "$RECIPE")"
-    done
+  echo "Available recipes:"
+  for RECIPE in "$RECIPE_DIR"/*; do
+    [ -f "$RECIPE" ] && [ -x "$RECIPE" ] && echo "  $(basename "$RECIPE")"
+  done
 }
 
 run_recipe() {
-    RECIPE="$RECIPE_DIR/$1"
-    if [ ! -f "$RECIPE" ]; then
-        echo "error: unknown recipe '$1'" >&2
-        echo "run 'install --list' to see available recipes" >&2
-        return 1
-    fi
-    echo ""
-    echo "==> $1"
-    "$RECIPE"
+  RECIPE="$RECIPE_DIR/$1"
+  if [ ! -f "$RECIPE" ]; then
+    echo "error: unknown recipe '$1'" >&2
+    echo "run 'install --list' to see available recipes" >&2
+    return 1
+  fi
+  echo ""
+  echo "==> $1"
+  "$RECIPE"
 }
 
 if [ $# -eq 0 ]; then
-    usage
-    exit 1
+  usage
+  exit 1
 fi
 
 case "$1" in
-    --list | -l)
-        list_recipes
-        exit 0
-        ;;
-    --help | -h)
-        usage
-        exit 0
-        ;;
+--list | -l)
+  list_recipes
+  exit 0
+  ;;
+--help | -h)
+  usage
+  exit 0
+  ;;
 esac
 
 for RECIPE_NAME in "$@"; do
-    run_recipe "$RECIPE_NAME"
+  run_recipe "$RECIPE_NAME"
 done

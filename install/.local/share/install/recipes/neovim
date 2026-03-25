@@ -7,15 +7,15 @@ REPO_DIR="$HOME/code/neovim"
 sudo -v
 
 if [ -d "$REPO_DIR" ]; then
-    echo "Existing neovim repo found, cleaning up..."
-    cd "$REPO_DIR"
-    make distclean || true
-    git tag -d $(git tag) 2>/dev/null || true
-    git fetch --tags
+  echo "Existing neovim repo found, cleaning up..."
+  cd "$REPO_DIR"
+  make distclean || true
+  git tag -d $(git tag) 2>/dev/null || true
+  git fetch --tags
 else
-    echo "Cloning neovim..."
-    git clone https://github.com/neovim/neovim "$REPO_DIR"
-    cd "$REPO_DIR"
+  echo "Cloning neovim..."
+  git clone https://github.com/neovim/neovim "$REPO_DIR"
+  cd "$REPO_DIR"
 fi
 
 echo "Checking out stable..."

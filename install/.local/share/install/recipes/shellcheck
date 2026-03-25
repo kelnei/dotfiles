@@ -9,8 +9,8 @@ LATEST=$(curl -fsSL https://api.github.com/repos/koalaman/shellcheck/releases/la
 VERSION="${LATEST#v}"
 
 echo "Installing shellcheck $VERSION..."
-curl -fsSL "https://github.com/koalaman/shellcheck/releases/download/${LATEST}/shellcheck-${LATEST}.linux.x86_64.tar.xz" \
-  | tar -xJ -C "$TMP_DIR"
+curl -fsSL "https://github.com/koalaman/shellcheck/releases/download/${LATEST}/shellcheck-${LATEST}.linux.x86_64.tar.xz" |
+  tar -xJ -C "$TMP_DIR"
 mv "$TMP_DIR/shellcheck-${LATEST}/shellcheck" "$INSTALL_DIR/shellcheck"
 rm -rf "$TMP_DIR"
 
