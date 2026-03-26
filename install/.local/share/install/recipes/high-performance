@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# prompt for sudo credentials upfront
+sudo -v
+
+SERVICE_NAME="high-performance.service"
+SERVICE_PATH="/etc/systemd/system/$SERVICE_NAME"
+
+echo "Installing $SERVICE_NAME..."
+
+# write the unit file
+sudo tee "$SERVICE_PATH" > /dev/null <<'EOF'
+[Unit]
+Description=Set performance profile on boot
+After=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/system76-power profile performance
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# enable and start immediately
+sudo systemctl enable --now "$SERVICE_NAME"
+
+echo "$SERVICE_NAME enabled and started"
