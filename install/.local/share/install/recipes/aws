@@ -4,7 +4,7 @@ set -euo pipefail
 echo "Installing latest AWS CLI v2..."
 curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o /tmp/awscliv2.zip
 unzip -q /tmp/awscliv2.zip -d /tmp
-/tmp/aws/install --install-dir "$HOME/.local/aws-cli" --bin-dir "$HOME/.local/bin"
+/tmp/aws/install --install-dir "$HOME/.local/aws-cli" --bin-dir "$HOME/.local/bin" --update
 rm -rf /tmp/awscliv2.zip /tmp/aws
 
 echo "$("$HOME/.local/bin/aws" --version) installed"

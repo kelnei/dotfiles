@@ -43,7 +43,7 @@ Open a new shell (so the stowed bash config is active), then:
 recipe_install all
 ```
 
-This installs: starship, go, rust, uv, bun, gh, aws, ssm, ripgrep, shellcheck, shfmt, fzf, bat, docker, 1password, op, gopass, proton-pass, fnm, claude, codex, opencode, neovim, ghostty, tmux, brave, and lmstudio.
+This installs: starship, go, rust, uv, bun, gh, aws, ssm, ripgrep, shellcheck, shfmt, fzf, bat, just, docker, 1password, op, gopass, proton_pass, fnm, claude, codex, opencode, neovim, ghostty, tmux, brave, and lmstudio.
 
 After installing tmux, launch it and press `Ctrl+Space I` to install plugins.
 

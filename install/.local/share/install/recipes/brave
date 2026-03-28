@@ -5,6 +5,6 @@ set -euo pipefail
 sudo -v
 
 echo "Installing latest Brave browser..."
-curl -fsS https://dl.brave.com/install.sh | sh
+curl -fsSL https://dl.brave.com/install.sh | sh
 
 echo "Brave $(brave-browser --version) installed"

@@ -45,6 +45,6 @@ map("n", "<Esc>", "<cmd>nohlsearch<cr>")
 map("n", "<leader>e", "<cmd>Oil<cr>", { desc = "Open file explorer" })
 
 -- diagnostics
-map("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
-map("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
+map("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end, { desc = "Previous diagnostic" })
+map("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end, { desc = "Next diagnostic" })
 map("n", "<leader>d", vim.diagnostic.open_float, { desc = "Show diagnostic" })

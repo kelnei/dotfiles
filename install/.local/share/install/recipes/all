@@ -23,6 +23,7 @@ run shellcheck
 run shfmt
 run fzf
 run bat
+run just
 run docker
 run 1password
 run op
