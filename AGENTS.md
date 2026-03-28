@@ -17,6 +17,10 @@ If a tool requires credentials at runtime, it must read them from outside the re
 (e.g. environment variables set manually, a secrets manager, or `~/.config/<tool>/credentials`
 that is not tracked here). Never add such files to a stow package.
 
+For shell-level secrets (API keys, tokens), place them in `~/.bashrc.secrets.d/<name>.sh`.
+This directory is created by `10-dirs.sh` and sourced by `15-secrets.sh` on every
+interactive shell startup. It is not tracked by git.
+
 ---
 
 ## Repository Overview
@@ -30,7 +34,7 @@ directory tree mirrors `$HOME` exactly. Stowing a package creates symlinks in `$
   bash/        -> ~/.bashrc, ~/.bashrc.d/
   git/         -> ~/.gitconfig, ~/.gitignore
   ghostty/     -> ~/.config/ghostty/config
-  install/     -> ~/.local/bin/install, ~/.local/share/install/recipes/*
+  install/     -> ~/.local/bin/recipe_install, ~/.local/share/install/recipes/*
   nvim/        -> ~/.config/nvim/
   starship/    -> ~/.config/starship.toml
   tmux/        -> ~/.tmux.conf
@@ -57,8 +61,8 @@ Validation is done by sourcing or running scripts manually:
 # Test bash config by sourcing
 source ~/.bashrc
 
-# Test a single install script
-install_gh
+# Test a single install recipe
+recipe_install gh
 
 # Dry-run stow to check for conflicts without making changes
 stow --dir=$HOME/.dotfiles --target=$HOME --simulate <package>
@@ -79,7 +83,7 @@ Pass `-ln bash -i 2` explicitly:
 
 ```bash
 # format install recipes
-shfmt -w -ln bash -i 2 install/.local/bin/install install/.local/share/install/recipes/
+shfmt -w -ln bash -i 2 install/.local/bin/recipe_install install/.local/share/install/recipes/
 ```
 
 ---
@@ -105,8 +109,9 @@ Files are numbered with a two-digit prefix to control load order:
 | Prefix | Purpose |
 |---|---|
 | `00` | Guards and prerequisites (interactivity check) |
-| `10` | Shell behavior and directory bootstrap (history, `~/code`) |
-| `20` | Environment setup — PATH exports, env variables |
+| `10` | Shell behavior and directory bootstrap (history, `~/code`, `~/.bashrc.secrets.d`) |
+| `15` | Secrets — sources `~/.bashrc.secrets.d/*.sh` for machine-local secret exports |
+| `20` | Environment setup — PATH exports, env variables, shell options |
 | `30` | Prompt |
 | `40` | Aliases |
 | `50` | Tool integrations (completions, fnm, etc.) |
@@ -210,10 +215,10 @@ export PATH="$HOME/.local/bin:$PATH" # add local bin to PATH
 
 Usage:
 ```bash
-install <recipe>           # run one recipe
-install <recipe> [recipe]  # run multiple recipes
-install --list             # show available recipes
-install all                # run everything
+recipe_install <recipe>           # run one recipe
+recipe_install <recipe> [recipe]  # run multiple recipes
+recipe_install --list             # show available recipes
+recipe_install all                # run everything
 ```
 
 ---
