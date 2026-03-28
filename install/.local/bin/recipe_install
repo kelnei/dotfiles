@@ -4,8 +4,8 @@ set -euo pipefail
 RECIPE_DIR="$HOME/.local/share/install/recipes"
 
 usage() {
-  echo "Usage: install <recipe> [recipe ...]"
-  echo "       install --list"
+  echo "Usage: recipe_install <recipe> [recipe ...]"
+  echo "       recipe_install --list"
   echo ""
   echo "Run install recipes for developer tools."
 }
@@ -21,7 +21,7 @@ run_recipe() {
   RECIPE="$RECIPE_DIR/$1"
   if [ ! -f "$RECIPE" ]; then
     echo "error: unknown recipe '$1'" >&2
-    echo "run 'install --list' to see available recipes" >&2
+    echo "run 'recipe_install --list' to see available recipes" >&2
     return 1
   fi
   echo ""
