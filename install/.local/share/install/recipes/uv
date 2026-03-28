@@ -5,3 +5,8 @@ echo "Installing latest uv..."
 UV_NO_MODIFY_PATH=1 curl -fsSL https://astral.sh/uv/install.sh | sh
 
 echo "uv $(~/.local/bin/uv --version) installed"
+
+# python tools managed by uv
+~/.local/bin/uv tool install ruff
+
+echo "ruff $(~/.local/bin/ruff --version) installed via uv tool"

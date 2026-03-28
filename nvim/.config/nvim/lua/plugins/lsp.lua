@@ -26,7 +26,6 @@ return {
     opts = {
       ensure_installed = {
         "prettier", -- JS/TS formatter
-        "ruff",     -- Python formatter and linter
       },
     },
   },
