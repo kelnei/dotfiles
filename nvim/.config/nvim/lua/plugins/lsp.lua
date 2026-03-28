@@ -19,6 +19,18 @@ return {
     },
   },
 
+  -- auto-install formatters and other tools via mason
+  {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    dependencies = { "williamboman/mason.nvim" },
+    opts = {
+      ensure_installed = {
+        "prettier", -- JS/TS formatter
+        "ruff",     -- Python formatter and linter
+      },
+    },
+  },
+
   -- lspconfig
   {
     "neovim/nvim-lspconfig",
@@ -44,7 +56,7 @@ return {
           map("K", vim.lsp.buf.hover, "Hover documentation")
           map("<leader>rn", vim.lsp.buf.rename, "Rename symbol")
           map("<leader>ca", vim.lsp.buf.code_action, "Code action")
-          map("<leader>f", function() vim.lsp.buf.format({ async = true }) end, "Format buffer")
+          map("<leader>f", function() require("conform").format({ lsp_format = "fallback" }) end, "Format buffer")
         end,
       })
 
