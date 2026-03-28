@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+DOTFILES_DIR="$HOME/.dotfiles"
+PACKAGES=(bash ghostty git install nvim starship tmux)
+
+# prompt for sudo once upfront
+sudo -v
+
+echo "Installing system dependencies..."
+sudo apt-get update -y
+sudo apt-get install -y \
+  wget \
+  curl \
+  git \
+  git-lfs \
+  stow \
+  build-essential \
+  gettext \
+  ninja-build \
+  make \
+  cmake
+
+echo "Creating ~/.local/bin..."
+mkdir -p "$HOME/.local/bin"
+
+# remove default .bashrc so stow can replace it
+if [ -f "$HOME/.bashrc" ] && [ ! -L "$HOME/.bashrc" ]; then
+  echo "Removing default ~/.bashrc..."
+  rm "$HOME/.bashrc"
+fi
+
+echo "Stowing packages: ${PACKAGES[*]}..."
+stow --dir="$DOTFILES_DIR" --target="$HOME" "${PACKAGES[@]}"
+
+echo "Bootstrap complete. Open a new shell or run: source ~/.bashrc"

@@ -78,12 +78,12 @@ stow --dir=$HOME/.dotfiles --target=$HOME --simulate <package>
 shfmt -w bash/.bashrc.d/
 ```
 
-Install recipes have no `.sh` extension, so editorconfig is not applied automatically.
-Pass `-ln bash -i 2` explicitly:
+Install recipes and the `bootstrap` script have no `.sh` extension, so editorconfig is
+not applied automatically. Pass `-ln bash -i 2` explicitly:
 
 ```bash
-# format install recipes
-shfmt -w -ln bash -i 2 install/.local/bin/recipe_install install/.local/share/install/recipes/
+# format install recipes and bootstrap
+shfmt -w -ln bash -i 2 bootstrap install/.local/bin/recipe_install install/.local/share/install/recipes/
 ```
 
 ---
