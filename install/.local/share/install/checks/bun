@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_lib.sh"
+
+# tag is "bun-v1.3.11"
+LATEST=$(github_latest oven-sh/bun)
+LATEST="${LATEST#bun-v}"
+
+INSTALLED=$(bun --version 2>/dev/null) || INSTALLED="not installed"
+
+check_version bun "$INSTALLED" "$LATEST"

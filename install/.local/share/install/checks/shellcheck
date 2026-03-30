@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_lib.sh"
+
+LATEST=$(github_latest koalaman/shellcheck)
+LATEST="${LATEST#v}"
+
+INSTALLED=$(shellcheck --version 2>/dev/null | grep 'version:' | awk '{print $2}') || INSTALLED="not installed"
+
+check_version shellcheck "$INSTALLED" "$LATEST"

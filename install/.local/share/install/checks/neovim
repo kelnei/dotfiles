@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_lib.sh"
+
+# filter out the "stable" and "nightly" pseudo-releases
+LATEST=$(github_api "/repos/neovim/neovim/releases" | grep -o '"tag_name": *"[^"]*"' | cut -d'"' -f4 | grep -v -E '^(stable|nightly)$' | head -1)
+LATEST="${LATEST#v}"
+
+# "NVIM v0.12.0" -> "0.12.0"
+INSTALLED=$(nvim --version 2>/dev/null | head -1 | awk '{print $2}') || INSTALLED="not installed"
+INSTALLED="${INSTALLED#v}"
+
+check_version neovim "$INSTALLED" "$LATEST"

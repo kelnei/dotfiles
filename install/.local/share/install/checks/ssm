@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_lib.sh"
+
+LATEST=$(curl -fsSL "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/VERSION")
+
+INSTALLED=$(session-manager-plugin --version 2>/dev/null) || INSTALLED="not installed"
+
+check_version ssm "$INSTALLED" "$LATEST"

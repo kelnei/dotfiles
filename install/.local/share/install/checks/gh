@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_lib.sh"
+
+LATEST=$(github_latest cli/cli)
+LATEST="${LATEST#v}"
+
+INSTALLED=$(gh --version 2>/dev/null | head -1 | awk '{print $3}') || INSTALLED="not installed"
+
+check_version gh "$INSTALLED" "$LATEST"

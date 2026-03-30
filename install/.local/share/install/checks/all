@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+CHECKS=(
+  starship
+  go
+  rust
+  uv
+  ruff
+  bun
+  gh
+  aws
+  ssm
+  ripgrep
+  shellcheck
+  shfmt
+  fzf
+  bat
+  just
+  docker
+  op
+  gopass
+  fnm
+  claude
+  codex
+  opencode
+  neovim
+  tmux
+)
+
+for CHECK in "${CHECKS[@]}"; do
+  "$SCRIPT_DIR/$CHECK" || echo "$CHECK: check failed"
+done

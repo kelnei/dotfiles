@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_lib.sh"
+
+# uv tags have no prefix
+LATEST=$(github_latest astral-sh/uv)
+
+# "uv 0.11.2 (x86_64-unknown-linux-gnu)" -> "0.11.2"
+INSTALLED=$(uv --version 2>/dev/null | awk '{print $2}') || INSTALLED="not installed"
+
+check_version uv "$INSTALLED" "$LATEST"

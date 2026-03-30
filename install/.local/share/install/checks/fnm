@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_lib.sh"
+
+LATEST=$(github_latest Schniz/fnm)
+LATEST="${LATEST#v}"
+
+# "fnm 1.39.0" -> "1.39.0"
+INSTALLED=$(fnm --version 2>/dev/null | awk '{print $2}') || INSTALLED="not installed"
+
+check_version fnm "$INSTALLED" "$LATEST"

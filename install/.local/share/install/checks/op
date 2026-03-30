@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_lib.sh"
+
+LATEST=$(curl -fsSL "https://app-updates.agilebits.com/check/1/0/CLI2/en/0/N" | grep -o '"version":"[^"]*"' | cut -d'"' -f4)
+
+INSTALLED=$(op --version 2>/dev/null) || INSTALLED="not installed"
+
+check_version op "$INSTALLED" "$LATEST"

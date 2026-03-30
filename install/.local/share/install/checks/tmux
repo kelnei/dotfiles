@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_lib.sh"
+
+# tmux tags have no prefix (e.g. "3.6a")
+LATEST=$(github_latest tmux/tmux)
+
+# "tmux 3.4" -> "3.4"
+INSTALLED=$(tmux -V 2>/dev/null | awk '{print $2}') || INSTALLED="not installed"
+
+check_version tmux "$INSTALLED" "$LATEST"

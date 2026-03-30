@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_lib.sh"
+
+LATEST=$(github_latest anomalyco/opencode)
+LATEST="${LATEST#v}"
+
+INSTALLED=$("$HOME/.opencode/bin/opencode" --version 2>/dev/null) || INSTALLED="not installed"
+
+check_version opencode "$INSTALLED" "$LATEST"

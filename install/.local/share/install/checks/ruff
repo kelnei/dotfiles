@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_lib.sh"
+
+LATEST=$(github_latest astral-sh/ruff)
+LATEST="${LATEST#v}"
+
+# "ruff 0.15.8" -> "0.15.8"
+INSTALLED=$(ruff --version 2>/dev/null | awk '{print $2}') || INSTALLED="not installed"
+
+check_version ruff "$INSTALLED" "$LATEST"

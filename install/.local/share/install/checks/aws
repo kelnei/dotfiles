@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_lib.sh"
+
+LATEST=$(github_latest_tag aws/aws-cli)
+
+# "aws-cli/2.34.11 Python/3.13.11 ..." -> "2.34.11"
+INSTALLED=$(aws --version 2>/dev/null | awk '{print $1}' | cut -d'/' -f2) || INSTALLED="not installed"
+
+check_version aws "$INSTALLED" "$LATEST"

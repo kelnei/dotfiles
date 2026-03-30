@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_lib.sh"
+
+LATEST=$(github_latest BurntSushi/ripgrep)
+
+INSTALLED=$(rg --version 2>/dev/null | head -1 | awk '{print $2}') || INSTALLED="not installed"
+
+check_version ripgrep "$INSTALLED" "$LATEST"

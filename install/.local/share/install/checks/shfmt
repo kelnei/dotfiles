@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_lib.sh"
+
+LATEST=$(github_latest mvdan/sh)
+LATEST="${LATEST#v}"
+
+INSTALLED=$(shfmt --version 2>/dev/null) || INSTALLED="not installed"
+INSTALLED="${INSTALLED#v}"
+
+check_version shfmt "$INSTALLED" "$LATEST"

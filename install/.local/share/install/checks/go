@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_lib.sh"
+
+# go.dev returns e.g. "go1.26.1"
+LATEST=$(curl -fsSL "https://golang.org/VERSION?m=text" | head -1)
+LATEST="${LATEST#go}"
+
+INSTALLED=$(go version 2>/dev/null | awk '{print $3}') || INSTALLED="not installed"
+INSTALLED="${INSTALLED#go}"
+
+check_version go "$INSTALLED" "$LATEST"
