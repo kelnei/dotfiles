@@ -13,4 +13,4 @@ curl -fsSL "https://github.com/sharkdp/bat/releases/download/${LATEST}/bat_${VER
 sudo dpkg -i /tmp/bat.deb
 rm /tmp/bat.deb
 
-echo "bat $(batcat --version) installed"
+echo "bat $(bat --version) installed"
