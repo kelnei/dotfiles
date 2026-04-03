@@ -2,6 +2,6 @@
 set -euo pipefail
 
 echo "Installing latest codex..."
-npm install -g @openai/codex
+npm install -g @openai/codex@latest
 
 echo "codex $(codex --version) installed"
