@@ -50,8 +50,8 @@ alias path='echo $PATH | tr ":" "\n"'
 alias ports='ss -tulnp'
 
 # claude code accounts
-alias claude-work="CLAUDE_CONFIG_DIR=$HOME/.claude-work command claude"
-alias claude-personal="CLAUDE_CONFIG_DIR=$HOME/.claude-personal command claude"
+alias claude-work="CLAUDE_CODE_NO_FLICKER=1 CLAUDE_CONFIG_DIR=$HOME/.claude-work command claude"
+alias claude-personal="CLAUDE_CODE_NO_FLICKER=1 CLAUDE_CONFIG_DIR=$HOME/.claude-personal command claude"
 alias claude="echo 'Use claude-work or claude-personal'"
 
 # ripgrep and bat (if installed)
