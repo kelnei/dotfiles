@@ -35,7 +35,7 @@ window-padding-x = 8
 window-padding-y = 8
 
 # scrollback
-scrollback-limit = 10000
+scrollback-limit = 4294967295
 
 # shell integration
 shell-integration = bash
