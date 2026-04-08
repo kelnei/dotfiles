@@ -19,6 +19,7 @@ return {
         "markdown_inline",
         "html",
         "css",
+        "php",
         "gitcommit",
         "gitignore",
       },

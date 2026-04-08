@@ -11,9 +11,10 @@ return {
     dependencies = { "williamboman/mason.nvim" },
     opts = {
       ensure_installed = {
-        "ts_ls",   -- TypeScript/JavaScript
-        "pyright", -- Python
-        "lua_ls",  -- Lua
+        "ts_ls",        -- TypeScript/JavaScript
+        "pyright",      -- Python
+        "lua_ls",       -- Lua
+        "intelephense", -- PHP
       },
       automatic_installation = true,
     },
@@ -71,7 +72,7 @@ return {
         },
       })
 
-      vim.lsp.enable({ "ts_ls", "pyright", "lua_ls" })
+      vim.lsp.enable({ "ts_ls", "pyright", "lua_ls", "intelephense" })
     end,
   },
 
