@@ -1,4 +1,4 @@
--- leader keys must be set before lazy.nvim loads
+-- leader keys must be set before plugins load
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
