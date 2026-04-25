@@ -23,6 +23,7 @@ cd "$TMP_DIR/tmux-$VERSION"
 ./configure --prefix="$INSTALL_PREFIX"
 make
 make install
+cd "$HOME"
 rm -rf "$TMP_DIR"
 
 # install TPM (tmux plugin manager)
