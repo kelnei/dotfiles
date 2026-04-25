@@ -1,8 +1,8 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 format = """
-[](color_orange)\
-$os\
+${custom.local_os}\
+${custom.ssh_os}\
 ${custom.local_user}\
 ${custom.ssh_user}\
 $directory\
@@ -41,35 +41,20 @@ color_green = '#98971a'
 color_orange = '#d65d0e'
 color_purple = '#b16286'
 color_red = '#cc241d'
+color_ssh = '#7c6fbd'
 color_yellow = '#d79921'
 
-[os]
-disabled = false
+[custom.local_os]
+command = 'if [ -r /etc/os-release ]; then . /etc/os-release; fi; case "${ID:-$(uname -s)}" in ubuntu) printf "󰕈";; suse|opensuse*|sled|sles) printf "";; raspbian) printf "󰐿";; linuxmint|mint) printf "󰣭";; Darwin|darwin) printf "󰀵";; manjaro) printf "";; gentoo) printf "󰣨";; fedora) printf "󰣛";; alpine) printf "";; amzn|amazon) printf "";; android) printf "";; aosc) printf "";; arch|artix) printf "󰣇";; endeavouros) printf "";; centos) printf "";; debian) printf "󰣚";; rhel|redhat) printf "󱄛";; pop) printf "";; *) printf "󰌽";; esac'
+when = 'test -z "$SSH_CONNECTION$SSH_CLIENT$SSH_TTY"'
 style = "bg:color_orange fg:color_fg0"
+format = '[](color_orange)[$output]($style)'
 
-[os.symbols]
-Windows = "󰍲"
-Ubuntu = "󰕈"
-SUSE = ""
-Raspbian = "󰐿"
-Mint = "󰣭"
-Macos = "󰀵"
-Manjaro = ""
-Linux = "󰌽"
-Gentoo = "󰣨"
-Fedora = "󰣛"
-Alpine = ""
-Amazon = ""
-Android = ""
-AOSC = ""
-Arch = "󰣇"
-Artix = "󰣇"
-EndeavourOS = ""
-CentOS = ""
-Debian = "󰣚"
-Redhat = "󱄛"
-RedHatEnterprise = "󱄛"
-Pop = ""
+[custom.ssh_os]
+command = 'if [ -r /etc/os-release ]; then . /etc/os-release; fi; case "${ID:-$(uname -s)}" in ubuntu) printf "󰕈";; suse|opensuse*|sled|sles) printf "";; raspbian) printf "󰐿";; linuxmint|mint) printf "󰣭";; Darwin|darwin) printf "󰀵";; manjaro) printf "";; gentoo) printf "󰣨";; fedora) printf "󰣛";; alpine) printf "";; amzn|amazon) printf "";; android) printf "";; aosc) printf "";; arch|artix) printf "󰣇";; endeavouros) printf "";; centos) printf "";; debian) printf "󰣚";; rhel|redhat) printf "󱄛";; pop) printf "";; *) printf "󰌽";; esac'
+when = 'test -n "$SSH_CONNECTION$SSH_CLIENT$SSH_TTY"'
+style = "bg:color_ssh fg:color_fg0"
+format = '[](color_ssh)[$output]($style)'
 
 [custom.local_user]
 command = 'printf "%s" "$USER"'
@@ -80,8 +65,8 @@ format = '[ $output ]($style)[](bg:color_yellow fg:color_orange)'
 [custom.ssh_user]
 command = 'printf "%s" "$USER"'
 when = 'test -n "$SSH_CONNECTION$SSH_CLIENT$SSH_TTY"'
-style = "bg:color_purple fg:color_fg0"
-format = '[](fg:color_orange bg:color_purple)[ $output ]($style)[](fg:color_purple bg:color_yellow)'
+style = "bg:color_ssh fg:color_fg0"
+format = '[ $output ]($style)[](fg:color_ssh bg:color_yellow)'
 
 [directory]
 style = "fg:color_fg0 bg:color_yellow"
