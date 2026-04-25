@@ -35,6 +35,7 @@ alias code='cd ~/code'
 
 # tmux
 alias tn='tmux new -s'
+alias tt='tmux new -t'
 alias ta='tmux attach -t'
 alias tl='tmux list-sessions'
 
