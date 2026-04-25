@@ -23,8 +23,9 @@ sudo apt-get install -y \
   make \
   cmake
 
-echo "Creating ~/.local/bin..."
+echo "Creating ~/.local/bin and ~/.local/share..."
 mkdir -p "$HOME/.local/bin"
+mkdir -p "$HOME/.local/share"
 
 # remove default .bashrc so stow can replace it
 if [ -f "$HOME/.bashrc" ] && [ ! -L "$HOME/.bashrc" ]; then
