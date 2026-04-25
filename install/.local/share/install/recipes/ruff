@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+UV="$HOME/.local/bin/uv"
+RUFF="$HOME/.local/bin/ruff"
+
+echo "Installing latest ruff via uv tool..."
+"$UV" tool install ruff
+
+echo "ruff $("$RUFF" --version) installed via uv tool"

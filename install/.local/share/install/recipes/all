@@ -14,6 +14,7 @@ run starship
 run go
 run rust
 run uv
+run ruff
 run bun
 run gh
 run aws
