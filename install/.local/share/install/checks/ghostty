@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_lib.sh"
+
+LATEST=$(github_latest mkasberg/ghostty-ubuntu)
+LATEST="${LATEST%%-*}"
+
+INSTALLED=$(ghostty --version 2>/dev/null | awk 'NR == 1 {print $2}') || INSTALLED="not installed"
+
+check_version ghostty "$INSTALLED" "$LATEST"

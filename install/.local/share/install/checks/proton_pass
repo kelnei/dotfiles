@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_lib.sh"
+
+LATEST=$(curl -fsSL "https://proton.me/download/pass-cli/versions.json" | grep -o '"version": *"[^"]*"' | head -1 | cut -d'"' -f4)
+
+INSTALLED=$(pass-cli --version 2>/dev/null | awk '{print $4}') || INSTALLED="not installed"
+
+check_version proton_pass "$INSTALLED" "$LATEST"

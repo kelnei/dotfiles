@@ -20,14 +20,20 @@ CHECKS=(
   bat
   just
   docker
+  1password
   op
   gopass
+  proton_pass
   fnm
   claude
   codex
   opencode
   neovim
+  ghostty
   tmux
+  brave
+  brave-origin
+  lmstudio
 )
 
 for CHECK in "${CHECKS[@]}"; do
