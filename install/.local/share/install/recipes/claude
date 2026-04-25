@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "Installing latest claude code..."
-curl -fsSL https://claude.ai/install.sh | bash
+CLAUDE="$HOME/.local/bin/claude"
 
-echo "claude $(claude --version) installed"
+if [ -x "$CLAUDE" ]; then
+  echo "Updating claude code..."
+  "$CLAUDE" upgrade
+else
+  echo "Installing latest claude code..."
+  curl -fsSL https://claude.ai/install.sh | bash
+fi
+
+echo "claude $("$CLAUDE" --version) installed"

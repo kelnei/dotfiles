@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "Installing latest opencode..."
-curl -fsSL https://opencode.ai/install | bash
+OPENCODE="$HOME/.opencode/bin/opencode"
 
-echo "opencode $("$HOME/.opencode/bin/opencode" --version) installed"
+if [ -x "$OPENCODE" ]; then
+  echo "Updating opencode..."
+  "$OPENCODE" upgrade
+else
+  echo "Installing latest opencode..."
+  curl -fsSL https://opencode.ai/install | bash
+fi
+
+echo "opencode $("$OPENCODE" --version) installed"

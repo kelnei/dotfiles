@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "Installing latest uv..."
-UV_NO_MODIFY_PATH=1 curl -fsSL https://astral.sh/uv/install.sh | sh
+UV="$HOME/.local/bin/uv"
 
-echo "uv $("$HOME/.local/bin/uv" --version) installed"
+if [ -x "$UV" ]; then
+  echo "Updating uv..."
+  "$UV" self update
+else
+  echo "Installing latest uv..."
+  UV_NO_MODIFY_PATH=1 curl -fsSL https://astral.sh/uv/install.sh | sh
+fi
+
+echo "uv $("$UV" --version) installed"

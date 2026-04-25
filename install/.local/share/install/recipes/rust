@@ -1,7 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "Installing latest rust toolchain..."
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+RUSTUP="$HOME/.cargo/bin/rustup"
+RUSTC="$HOME/.cargo/bin/rustc"
 
-echo "rustc $(~/.cargo/bin/rustc --version) installed"
+if [ -x "$RUSTUP" ]; then
+  echo "Updating rust toolchain..."
+  "$RUSTUP" update
+else
+  echo "Installing latest rust toolchain..."
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+fi
+
+echo "rustc $("$RUSTC" --version) installed"

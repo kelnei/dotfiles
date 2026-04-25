@@ -4,7 +4,12 @@ set -euo pipefail
 UV="$HOME/.local/bin/uv"
 RUFF="$HOME/.local/bin/ruff"
 
-echo "Installing latest ruff via uv tool..."
-"$UV" tool install ruff
+if [ -x "$RUFF" ]; then
+  echo "Updating ruff via uv tool..."
+  "$UV" tool upgrade ruff
+else
+  echo "Installing latest ruff via uv tool..."
+  "$UV" tool install ruff
+fi
 
 echo "ruff $("$RUFF" --version) installed via uv tool"

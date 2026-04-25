@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "Installing latest bun..."
-BUN_INSTALL="$HOME/.local" curl -fsSL https://bun.sh/install | bash
+BUN="$HOME/.local/bin/bun"
 
-echo "bun $(~/.local/bin/bun --version) installed"
+if [ -x "$BUN" ]; then
+  echo "Updating bun..."
+  "$BUN" upgrade
+else
+  echo "Installing latest bun..."
+  BUN_INSTALL="$HOME/.local" curl -fsSL https://bun.sh/install | bash
+fi
+
+echo "bun $("$BUN" --version) installed"
