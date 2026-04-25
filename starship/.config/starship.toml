@@ -3,8 +3,8 @@
 format = """
 [](color_orange)\
 $os\
-$username\
-[](bg:color_yellow fg:color_orange)\
+$custom.local_user\
+$custom.ssh_user\
 $directory\
 [](fg:color_yellow bg:color_aqua)\
 $git_branch\
@@ -71,11 +71,17 @@ Redhat = "󱄛"
 RedHatEnterprise = "󱄛"
 Pop = ""
 
-[username]
-show_always = true
-style_user = "bg:color_orange fg:color_fg0"
-style_root = "bg:color_orange fg:color_fg0"
-format = '[ $user ]($style)'
+[custom.local_user]
+command = 'printf "%s" "$USER"'
+when = 'test -z "$SSH_CONNECTION$SSH_CLIENT$SSH_TTY"'
+style = "bg:color_orange fg:color_fg0"
+format = '[ $output ]($style)[](bg:color_yellow fg:color_orange)'
+
+[custom.ssh_user]
+command = 'printf "%s" "$USER"'
+when = 'test -n "$SSH_CONNECTION$SSH_CLIENT$SSH_TTY"'
+style = "bg:color_purple fg:color_fg0"
+format = '[](fg:color_orange bg:color_purple)[ $output ]($style)[](fg:color_purple bg:color_yellow)'
 
 [directory]
 style = "fg:color_fg0 bg:color_yellow"
