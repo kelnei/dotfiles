@@ -5,7 +5,8 @@ INSTALL_DIR="$HOME/.local/bin"
 TMP_DIR=$(mktemp -d)
 
 echo "Fetching latest shellcheck release..."
-LATEST=$(curl -fsSL https://api.github.com/repos/koalaman/shellcheck/releases/latest | grep '"tag_name"' | cut -d'"' -f4)
+LATEST=$(curl -fsSL https://api.github.com/repos/koalaman/shellcheck/releases/latest | sed -n 's/.*"tag_name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p')
+: "${LATEST:?failed to parse latest release tag}"
 VERSION="${LATEST#v}"
 
 echo "Installing shellcheck $VERSION..."

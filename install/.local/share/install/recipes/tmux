@@ -9,7 +9,8 @@ TMP_DIR=$(mktemp -d)
 sudo -v
 
 echo "Fetching latest tmux release..."
-LATEST=$(curl -fsSL https://api.github.com/repos/tmux/tmux/releases/latest | grep '"tag_name"' | cut -d'"' -f4)
+LATEST=$(curl -fsSL https://api.github.com/repos/tmux/tmux/releases/latest | sed -n 's/.*"tag_name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p')
+: "${LATEST:?failed to parse latest release tag}"
 VERSION="${LATEST#v}"
 
 echo "Installing tmux build dependencies..."
