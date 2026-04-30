@@ -1,7 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "Installing latest codex..."
-npm install -g @openai/codex@latest
+INSTALL_DIR="$HOME/.local/bin"
+TMP_DIR=$(mktemp -d)
 
-echo "codex $(codex --version) installed"
+echo "Installing latest codex..."
+LATEST=$(curl -fsSL https://api.github.com/repos/openai/codex/releases/latest | sed -n 's/.*"tag_name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p')
+: "${LATEST:?failed to parse latest release tag}"
+
+echo "Installing codex ${LATEST#rust-v}..."
+curl -fsSL "https://github.com/openai/codex/releases/download/${LATEST}/codex-x86_64-unknown-linux-musl.tar.gz" |
+  tar -xz -C "$TMP_DIR"
+mv "$TMP_DIR/codex-x86_64-unknown-linux-musl" "$INSTALL_DIR/codex"
+rm -rf "$TMP_DIR"
+
+echo "codex $("$INSTALL_DIR/codex" --version) installed to $INSTALL_DIR/codex"

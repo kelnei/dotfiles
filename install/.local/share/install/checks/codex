@@ -2,7 +2,8 @@
 set -euo pipefail
 source "$(dirname "$0")/_lib.sh"
 
-LATEST=$(curl -fsSL https://registry.npmjs.org/@openai/codex/latest | grep -o '"version":"[^"]*"' | head -1 | cut -d'"' -f4)
+LATEST=$(github_latest openai/codex)
+LATEST="${LATEST#rust-v}"
 
 # "codex-cli 0.117.0" -> "0.117.0"
 INSTALLED=$(codex --version 2>/dev/null | awk '{print $2}') || INSTALLED="not installed"
