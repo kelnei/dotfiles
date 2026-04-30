@@ -10,12 +10,6 @@ vim.api.nvim_create_autocmd("PackChanged", {
       if not ev.data.active then vim.cmd.packadd("nvim-treesitter") end
       vim.cmd("TSUpdate")
     end
-
-    -- compile fzf sorter on install or update
-    if name == "telescope-fzf-native.nvim" and (kind == "install" or kind == "update") then
-      local path = vim.fn.stdpath("data") .. "/site/pack/core/opt/telescope-fzf-native.nvim"
-      vim.fn.system({ "make", "-C", path })
-    end
   end,
 })
 
@@ -37,9 +31,7 @@ vim.pack.add({
   "https://github.com/stevearc/conform.nvim",
 
   -- fuzzy finder
-  "https://github.com/nvim-lua/plenary.nvim",
-  "https://github.com/nvim-telescope/telescope-fzf-native.nvim",
-  { src = "https://github.com/nvim-telescope/telescope.nvim", version = "0.1.x" },
+  "https://github.com/ibhagwan/fzf-lua",
 
   -- file explorer
   "https://github.com/nvim-tree/nvim-web-devicons",
