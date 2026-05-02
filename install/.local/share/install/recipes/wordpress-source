@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+REPO_DIR="$HOME/code/wordpress"
+REPO_URL="https://github.com/WordPress/WordPress.git"
+
+echo "Installing latest WordPress source..."
+mkdir -p "$(dirname "$REPO_DIR")"
+
+if [ -d "$REPO_DIR/.git" ]; then
+  git -C "$REPO_DIR" fetch --tags --prune
+else
+  if [ -e "$REPO_DIR" ]; then
+    echo "error: $REPO_DIR exists but is not a git repository" >&2
+    exit 1
+  fi
+
+  git clone "$REPO_URL" "$REPO_DIR"
+fi
+
+LATEST=$(git -C "$REPO_DIR" tag --list "[0-9]*" --sort=-v:refname | sed -n "1p")
+: "${LATEST:?failed to find latest WordPress release tag}"
+
+git -C "$REPO_DIR" checkout "$LATEST"
+
+echo "wordpress $(git -C "$REPO_DIR" describe --tags --exact-match) source installed to $REPO_DIR"
