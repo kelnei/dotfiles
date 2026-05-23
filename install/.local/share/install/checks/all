@@ -3,6 +3,14 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# GUI apps — skipped on headless server environments (no DISPLAY or WAYLAND_DISPLAY)
+GUI_CHECKS=(
+  1password
+  brave
+  brave-origin
+  lmstudio
+)
+
 CHECKS=(
   starship
   go
@@ -36,6 +44,23 @@ CHECKS=(
   lmstudio
 )
 
+is_gui_check() {
+  local name="$1"
+  for gui in "${GUI_CHECKS[@]}"; do
+    [ "$name" = "$gui" ] && return 0
+  done
+  return 1
+}
+
+IS_SERVER=0
+if [ -z "${DISPLAY:-}" ] && [ -z "${WAYLAND_DISPLAY:-}" ]; then
+  IS_SERVER=1
+  echo "headless environment detected: skipping GUI app checks (${GUI_CHECKS[*]})"
+fi
+
 for CHECK in "${CHECKS[@]}"; do
+  if [ "$IS_SERVER" = 1 ] && is_gui_check "$CHECK"; then
+    continue
+  fi
   "$SCRIPT_DIR/$CHECK" || echo "$CHECK: check failed"
 done

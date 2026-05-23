@@ -3,10 +3,25 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+IS_SERVER=0
+if [ -z "${DISPLAY:-}" ] && [ -z "${WAYLAND_DISPLAY:-}" ]; then
+  IS_SERVER=1
+fi
+
 run() {
   echo ""
   echo "==> $1"
   "$SCRIPT_DIR/$1"
+}
+
+# run a GUI app recipe — skipped on headless server environments
+run_gui() {
+  if [ "$IS_SERVER" = 1 ]; then
+    echo ""
+    echo "==> $1 (skipped: headless environment)"
+    return
+  fi
+  run "$1"
 }
 
 # base tools
@@ -26,7 +41,7 @@ run fzf
 run bat
 run just
 run docker
-run 1password
+run_gui 1password
 run op
 run gopass
 run proton_pass
@@ -40,8 +55,8 @@ run opencode
 run neovim
 run ghostty
 run tmux
-run brave
-run lmstudio
+run_gui brave
+run_gui lmstudio
 
 echo ""
 echo "All tools installed successfully."
