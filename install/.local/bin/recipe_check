@@ -19,7 +19,7 @@ list_checks() {
 
 run_check() {
   CHECK="$CHECK_DIR/$1"
-  if [ ! -f "$CHECK" ]; then
+  if [ ! -f "$CHECK" ] || [ ! -x "$CHECK" ]; then
     echo "error: unknown check '$1'" >&2
     echo "run 'recipe_check --list' to see available checks" >&2
     return 1

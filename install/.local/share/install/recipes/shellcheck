@@ -1,16 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# shellcheck source=_lib.sh
+source "$(dirname "$0")/_lib.sh"
+
 INSTALL_DIR="$HOME/.local/bin"
 TMP_DIR=$(mktemp -d)
 
 echo "Fetching latest shellcheck release..."
-LATEST=$(curl -fsSL https://api.github.com/repos/koalaman/shellcheck/releases/latest | sed -n 's/.*"tag_name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p')
+LATEST=$(github_latest koalaman/shellcheck)
 : "${LATEST:?failed to parse latest release tag}"
 VERSION="${LATEST#v}"
 
 echo "Installing shellcheck $VERSION..."
-curl -fsSL "https://github.com/koalaman/shellcheck/releases/download/${LATEST}/shellcheck-${LATEST}.linux.x86_64.tar.xz" |
+github_download koalaman/shellcheck "$LATEST" "shellcheck-${LATEST}.linux.x86_64.tar.xz" |
   tar -xJ -C "$TMP_DIR"
 mv "$TMP_DIR/shellcheck-${LATEST}/shellcheck" "$INSTALL_DIR/shellcheck"
 rm -rf "$TMP_DIR"

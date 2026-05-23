@@ -19,7 +19,7 @@ list_recipes() {
 
 run_recipe() {
   RECIPE="$RECIPE_DIR/$1"
-  if [ ! -f "$RECIPE" ]; then
+  if [ ! -f "$RECIPE" ] || [ ! -x "$RECIPE" ]; then
     echo "error: unknown recipe '$1'" >&2
     echo "run 'recipe_install --list' to see available recipes" >&2
     return 1

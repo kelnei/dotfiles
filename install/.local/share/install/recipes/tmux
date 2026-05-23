@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# shellcheck source=_lib.sh
+source "$(dirname "$0")/_lib.sh"
+
 INSTALL_PREFIX="$HOME/.local"
 INSTALL_DIR="$INSTALL_PREFIX/bin"
 TMP_DIR=$(mktemp -d)
@@ -9,7 +12,7 @@ TMP_DIR=$(mktemp -d)
 sudo -v
 
 echo "Fetching latest tmux release..."
-LATEST=$(curl -fsSL https://api.github.com/repos/tmux/tmux/releases/latest | sed -n 's/.*"tag_name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p')
+LATEST=$(github_latest tmux/tmux)
 : "${LATEST:?failed to parse latest release tag}"
 VERSION="${LATEST#v}"
 
@@ -18,7 +21,7 @@ sudo apt-get install -y build-essential bison pkg-config libevent-dev libncurses
 
 echo "Installing tmux $VERSION..."
 mkdir -p "$INSTALL_DIR"
-curl -fsSL "https://github.com/tmux/tmux/releases/download/${LATEST}/tmux-${VERSION}.tar.gz" |
+github_download tmux/tmux "$LATEST" "tmux-${VERSION}.tar.gz" |
   tar -xz -C "$TMP_DIR"
 cd "$TMP_DIR/tmux-$VERSION"
 ./configure --prefix="$INSTALL_PREFIX"

@@ -2,10 +2,17 @@
 # shared helpers for version check scripts
 # source this file, do not execute it
 
-# fetch json from the github api, using gh cli if available for authentication
+# fetch json from the github api
+# prefers gh cli (github.com auth), then curl with GITHUB_TOKEN, then anonymous curl
+# falls back from gh to curl on failure
 github_api() {
-  if command -v gh &>/dev/null && gh auth status &>/dev/null; then
-    gh api "$1" 2>/dev/null
+  if command -v gh &>/dev/null && gh auth status --hostname github.com &>/dev/null; then
+    if gh api "$1" 2>/dev/null; then
+      return
+    fi
+  fi
+  if [ -n "${GITHUB_TOKEN:-}" ]; then
+    curl -fsSL -H "Authorization: Bearer $GITHUB_TOKEN" "https://api.github.com$1" 2>/dev/null
   else
     curl -fsSL "https://api.github.com$1" 2>/dev/null
   fi
