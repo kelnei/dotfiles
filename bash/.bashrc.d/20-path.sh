@@ -8,6 +8,10 @@ export PATH="$HOME/.local/go/bin:$PATH"
 # Rust
 export PATH="$HOME/.cargo/bin:$PATH"
 
+# pnpm (native standalone install)
+export PNPM_HOME="$HOME/.local/share/pnpm"
+export PATH="$PNPM_HOME/bin:$PATH"
+
 # opencode
 export PATH="$HOME/.opencode/bin:$PATH"
 

@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# install the native (standalone) pnpm; re-running upgrades to the latest release.
+# pnpm lives in $PNPM_HOME/bin, which is added to PATH by bash/.bashrc.d/20-path.sh.
+export PNPM_HOME="$HOME/.local/share/pnpm"
+
+# the installer's `pnpm setup` appends a pnpm-managed block to ~/.bashrc, which is a
+# stow symlink into this repo. shell integration is managed in 20-path.sh instead, so
+# snapshot ~/.bashrc and restore it afterwards to keep the tracked file clean. writing
+# the content back (rather than mv) preserves the symlink.
+BASHRC="$HOME/.bashrc"
+BACKUP=""
+if [ -e "$BASHRC" ]; then
+  BACKUP="$(mktemp)"
+  cp "$BASHRC" "$BACKUP"
+fi
+
+echo "Installing latest pnpm..."
+curl -fsSL https://get.pnpm.io/install.sh | sh -
+
+if [ -n "$BACKUP" ]; then
+  cat "$BACKUP" >"$BASHRC"
+  rm -f "$BACKUP"
+fi
+
+echo "pnpm $("$PNPM_HOME/bin/pnpm" --version) installed to $PNPM_HOME/bin"

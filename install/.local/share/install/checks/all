@@ -33,6 +33,7 @@ CHECKS=(
   gopass
   proton_pass
   fnm
+  pnpm
   claude
   codex
   opencode

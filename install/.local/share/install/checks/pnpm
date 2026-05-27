@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_lib.sh"
+
+# the standalone installer resolves "latest" from the @pnpm/exe npm dist-tag
+LATEST=$(curl -fsSL https://registry.npmjs.org/@pnpm/exe 2>/dev/null |
+  grep -o '"latest":[[:space:]]*"[0-9.]*"' | grep -o '[0-9][0-9.]*')
+
+INSTALLED=$(pnpm --version 2>/dev/null) || INSTALLED="not installed"
+
+check_version pnpm "$INSTALLED" "$LATEST"
