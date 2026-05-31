@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_lib.sh"
+
+# x.ai publishes the latest stable version as plain text
+LATEST=$(curl -fsSL https://x.ai/cli/stable)
+
+INSTALLED=$(grok --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1) || INSTALLED="not installed"
+
+check_version grok "$INSTALLED" "$LATEST"

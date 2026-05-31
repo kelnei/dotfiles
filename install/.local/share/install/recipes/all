@@ -51,6 +51,7 @@ run pnpm
 
 run claude
 run codex
+run grok
 
 run opencode
 run neovim

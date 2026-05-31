@@ -36,6 +36,7 @@ CHECKS=(
   pnpm
   claude
   codex
+  grok
   opencode
   neovim
   ghostty

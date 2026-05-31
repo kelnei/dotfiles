@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+INSTALL_DIR="$HOME/.local/bin"
+
+echo "Installing latest grok..."
+# GROK_BIN_DIR points the installer at ~/.local/bin (already on PATH) instead of
+# its default ~/.grok/bin, and an empty SHELL stops it from appending a PATH
+# block to the stow-managed ~/.bashrc. installs grok plus its agent companion
+curl -fsSL https://x.ai/cli/install.sh | GROK_BIN_DIR="$INSTALL_DIR" SHELL='' bash
+
+echo "grok $("$INSTALL_DIR/grok" --version) installed to $INSTALL_DIR/grok"
