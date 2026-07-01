@@ -3,12 +3,19 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# shellcheck source=_lib.sh
+source "$SCRIPT_DIR/_lib.sh"
+
 IS_SERVER=0
-if [ -z "${DISPLAY:-}" ] && [ -z "${WAYLAND_DISPLAY:-}" ]; then
+if is_headless; then
   IS_SERVER=1
 fi
 
 run() {
+  if recipe_is_installed "$1"; then
+    recipe_announce_skip "$1"
+    return
+  fi
   echo ""
   echo "==> $1"
   "$SCRIPT_DIR/$1"

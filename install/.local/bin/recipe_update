@@ -1,0 +1,133 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+RECIPE_DIR="$HOME/.local/share/install/recipes"
+
+# shellcheck source=/dev/null
+source "$RECIPE_DIR/_lib.sh"
+
+# GUI apps - skipped on headless server environments (no DISPLAY or WAYLAND_DISPLAY)
+GUI_RECIPES=(
+  1password
+  brave
+  brave-origin
+  lmstudio
+)
+
+# tools with both a check and a recipe, in dependency order
+ALL_RECIPES=(
+  starship
+  go
+  rust
+  uv
+  ruff
+  bun
+  gh
+  aws
+  ssm
+  ripgrep
+  shellcheck
+  shfmt
+  fzf
+  bat
+  just
+  docker
+  1password
+  op
+  gopass
+  proton_pass
+  fnm
+  pnpm
+  claude
+  codex
+  grok
+  opencode
+  neovim
+  ghostty
+  tmux
+  brave
+  brave-origin
+  lmstudio
+)
+
+usage() {
+  echo "Usage: recipe_update <recipe> [recipe ...]"
+  echo "       recipe_update all"
+  echo "       recipe_update --list"
+  echo ""
+  echo "Update installed tools that have a newer version available. Tools"
+  echo "that are already up to date (or not installed) are left alone."
+}
+
+list_recipes() {
+  echo "Available updates:"
+  for NAME in "${ALL_RECIPES[@]}"; do
+    echo "  $NAME"
+  done
+}
+
+is_gui_recipe() {
+  for GUI in "${GUI_RECIPES[@]}"; do
+    [ "$1" = "$GUI" ] && return 0
+  done
+  return 1
+}
+
+update_recipe() {
+  RECIPE=$(require_recipe "$1") || return 1
+  CHECK=$(require_check "$1") || return 1
+
+  STATUS=$("$CHECK")
+  echo "$STATUS"
+
+  if recipe_status_missing "$STATUS"; then
+    echo "    not installed - run 'recipe_install $1' first"
+    return 0
+  fi
+
+  if recipe_status_up_to_date "$STATUS"; then
+    return 0
+  fi
+
+  echo ""
+  echo "==> $1"
+  "$RECIPE"
+}
+
+update_all() {
+  IS_SERVER=0
+  if is_headless; then
+    IS_SERVER=1
+    echo "headless environment detected: skipping GUI app updates (${GUI_RECIPES[*]})"
+  fi
+  for NAME in "${ALL_RECIPES[@]}"; do
+    if [ "$IS_SERVER" = 1 ] && is_gui_recipe "$NAME"; then
+      continue
+    fi
+    update_recipe "$NAME"
+  done
+}
+
+if [ $# -eq 0 ]; then
+  usage
+  exit 1
+fi
+
+case "$1" in
+--list | -l)
+  list_recipes
+  exit 0
+  ;;
+--help | -h)
+  usage
+  exit 0
+  ;;
+all)
+  update_all
+  exit 0
+  ;;
+esac
+
+for RECIPE_NAME in "$@"; do
+  update_recipe "$RECIPE_NAME"
+done

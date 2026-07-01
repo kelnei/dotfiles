@@ -2,6 +2,70 @@
 # shared helpers for install recipes
 # source this file, do not execute it
 
+# true if a checks/<name> status line indicates the tool isn't installed
+# usage: recipe_status_missing "$STATUS"
+recipe_status_missing() {
+  case "$1" in
+  *"not installed"*) return 0 ;;
+  *) return 1 ;;
+  esac
+}
+
+# true if a checks/<name> status line indicates the tool is already current
+# usage: recipe_status_up_to_date "$STATUS"
+recipe_status_up_to_date() {
+  case "$1" in
+  *"up to date"*) return 0 ;;
+  *) return 1 ;;
+  esac
+}
+
+# true if the tool's checks/<name> script reports it as already installed
+# ignores whether it's the latest version - see recipe_update for that
+recipe_is_installed() {
+  CHECK="$HOME/.local/share/install/checks/$1"
+  if [ ! -f "$CHECK" ] || [ ! -x "$CHECK" ]; then
+    return 1
+  fi
+  STATUS=$("$CHECK" 2>/dev/null) || return 1
+  ! recipe_status_missing "$STATUS"
+}
+
+# announce that a recipe is being skipped because it's already installed
+# usage: recipe_announce_skip "$1"
+recipe_announce_skip() {
+  echo ""
+  echo "==> $1 (already installed, skipping)"
+}
+
+# print the path to recipes/<name> and return 0, or print a usage error and
+# return 1 if it doesn't exist - usage: RECIPE=$(require_recipe "$1") || return 1
+require_recipe() {
+  RECIPE="$HOME/.local/share/install/recipes/$1"
+  if [ ! -f "$RECIPE" ] || [ ! -x "$RECIPE" ]; then
+    echo "error: unknown recipe '$1'" >&2
+    echo "run 'recipe_install --list' to see available recipes" >&2
+    return 1
+  fi
+  echo "$RECIPE"
+}
+
+# print the path to checks/<name> and return 0, or print a usage error and
+# return 1 if it doesn't exist - usage: CHECK=$(require_check "$1") || return 1
+require_check() {
+  CHECK="$HOME/.local/share/install/checks/$1"
+  if [ ! -f "$CHECK" ] || [ ! -x "$CHECK" ]; then
+    echo "error: no update check available for '$1'" >&2
+    return 1
+  fi
+  echo "$CHECK"
+}
+
+# true if there's no graphical session (no DISPLAY or WAYLAND_DISPLAY)
+is_headless() {
+  [ -z "${DISPLAY:-}" ] && [ -z "${WAYLAND_DISPLAY:-}" ]
+}
+
 # true if gh is installed and authenticated against github.com (not an enterprise host)
 _have_gh_github() {
   command -v gh &>/dev/null && gh auth status --hostname github.com &>/dev/null
