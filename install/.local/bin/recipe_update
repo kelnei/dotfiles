@@ -77,7 +77,10 @@ update_recipe() {
   RECIPE=$(require_recipe "$1") || return 1
   CHECK=$(require_check "$1") || return 1
 
-  STATUS=$("$CHECK")
+  if ! STATUS=$("$CHECK"); then
+    echo "$1: check failed" >&2
+    return 1
+  fi
   echo "$STATUS"
 
   if recipe_status_missing "$STATUS"; then
@@ -104,7 +107,7 @@ update_all() {
     if [ "$IS_SERVER" = 1 ] && is_gui_recipe "$NAME"; then
       continue
     fi
-    update_recipe "$NAME"
+    update_recipe "$NAME" || true
   done
 }
 
