@@ -34,7 +34,8 @@ directory tree mirrors `$HOME` exactly. Stowing a package creates symlinks in `$
   bash/        -> ~/.bashrc, ~/.bashrc.d/
   git/         -> ~/.gitconfig, ~/.gitignore
   ghostty/     -> ~/.config/ghostty/config
-  install/     -> ~/.local/bin/recipe_install, ~/.local/share/install/recipes/*
+  install/     -> ~/.local/bin/recipe_install, ~/.local/bin/recipe_check, ~/.local/bin/recipe_update,
+                  ~/.local/share/install/recipes/*, ~/.local/share/install/checks/*
   nvim/        -> ~/.config/nvim/
   starship/    -> ~/.config/starship.toml
   tmux/        -> ~/.tmux.conf
@@ -83,7 +84,7 @@ not applied automatically. Pass `-ln bash -i 2` explicitly:
 
 ```bash
 # format install recipes and bootstrap
-shfmt -w -ln bash -i 2 bootstrap install/.local/bin/recipe_install install/.local/share/install/recipes/
+shfmt -w -ln bash -i 2 bootstrap install/.local/bin/recipe_install install/.local/bin/recipe_check install/.local/bin/recipe_update install/.local/share/install/recipes/ install/.local/share/install/checks/
 ```
 
 ---
@@ -206,19 +207,34 @@ export PATH="$HOME/.local/bin:$PATH" # add local bin to PATH
    - Follow the install script pattern above
    - Use `curl -fsSL` and always install the latest version
    - Install binaries to `$HOME/.local/bin` where possible
-2. If the tool needs PATH or env vars, add them to `bash/.bashrc.d/20-path.sh`
-3. If the tool needs shell initialization (e.g. `eval "$(tool init bash)"`), create
+2. Create a matching check in `install/.local/share/install/checks/<tool>` that
+   sources `_lib.sh` and calls `check_version <tool> "$INSTALLED" "$LATEST"` - this
+   is what `recipe_install` uses to detect "already installed" and what
+   `recipe_update` uses to detect "update available"
+3. If the tool needs PATH or env vars, add them to `bash/.bashrc.d/20-path.sh`
+4. If the tool needs shell initialization (e.g. `eval "$(tool init bash)"`), create
    `bash/.bashrc.d/<prefix>-<tool>.sh` with the appropriate numeric prefix
-4. Add the new recipe to the `all` recipe in dependency order
-5. Restow affected packages
-6. Commit each logical change separately
+5. Add the new recipe to the `all` recipe (or `run_gui` if it's a GUI app) in
+   dependency order, add the matching check to the `CHECKS`/`GUI_CHECKS` arrays in
+   `checks/all`, and add the tool name to the `ALL_RECIPES`/`GUI_RECIPES` arrays in
+   `recipe_update` - all three lists should stay in the same order
+6. Restow affected packages
+7. Commit each logical change separately
 
 Usage:
 ```bash
-recipe_install <recipe>           # run one recipe
-recipe_install <recipe> [recipe]  # run multiple recipes
+recipe_install <recipe>           # install one recipe (skips if already installed)
+recipe_install <recipe> [recipe]  # install multiple recipes
 recipe_install --list             # show available recipes
-recipe_install all                # run everything
+recipe_install all                # install everything not yet installed
+
+recipe_check <recipe>             # check one recipe for an available update
+recipe_check all                  # check every recipe
+
+recipe_update <recipe>            # update one recipe (no-op if already up to date)
+recipe_update <recipe> [recipe]   # update multiple recipes
+recipe_update --list              # show recipes that support updating
+recipe_update all                 # update everything that's out of date
 ```
 
 ---
