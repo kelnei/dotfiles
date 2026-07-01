@@ -2,7 +2,7 @@
 set -euo pipefail
 source "$(dirname "$0")/_lib.sh"
 
-LATEST=$(curl -fsSL "https://brave-browser-apt-nightly.s3.brave.com/dists/stable/main/binary-amd64/Packages" | awk '/^Package: brave-origin-nightly$/{FOUND=1} FOUND && /^Version: /{print $2; exit}')
+LATEST=$(apt_package_version "https://brave-browser-apt-nightly.s3.brave.com/dists/stable/main/binary-amd64/Packages" brave-origin-nightly)
 
 # brave origin --version includes the chromium major version
 INSTALLED=$(brave-origin-nightly --version 2>/dev/null | awk '{N = split($4, V, "."); if (N == 4) print V[2] "." V[3] "." V[4]; else print $4}') || INSTALLED="not installed"

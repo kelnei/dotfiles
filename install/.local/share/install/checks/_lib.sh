@@ -30,6 +30,18 @@ github_latest_tag() {
   github_api "/repos/$1/tags?per_page=1" | grep -o '"name": *"[^"]*"' | head -1 | cut -d'"' -f4
 }
 
+# fetch a package's version from a debian "Packages" index
+# downloads to a temp file first - piping curl straight into an awk that
+# exits early races with curl still writing the rest of the file, which
+# can fail with "curl: (23) Failure writing output to destination"
+# usage: apt_package_version url package-name
+apt_package_version() {
+  TMP=$(mktemp)
+  curl -fsSL "$1" -o "$TMP"
+  awk -v pkg="$2" '$0 == "Package: " pkg {FOUND=1} FOUND && /^Version: /{print $2; exit}' "$TMP"
+  rm -f "$TMP"
+}
+
 # compare installed vs latest and print result
 # usage: check_version tool installed latest
 check_version() {
