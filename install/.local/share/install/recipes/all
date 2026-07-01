@@ -65,6 +65,7 @@ run neovim
 run ghostty
 run tmux
 run_gui brave
+run_gui brave-origin
 run_gui lmstudio
 
 echo ""
