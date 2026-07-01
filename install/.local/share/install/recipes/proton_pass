@@ -5,6 +5,10 @@ PASS_CLI="$HOME/.local/bin/pass-cli"
 
 if [ -x "$PASS_CLI" ]; then
   echo "Updating Proton Pass CLI..."
+  # the first "update -y" swaps the binary but just logs the session out
+  # instead of finishing the update; the second call (against the new
+  # binary) actually completes it - no flag exists to avoid this
+  "$PASS_CLI" update -y
   "$PASS_CLI" update -y
 else
   echo "Installing latest Proton Pass CLI..."
