@@ -39,3 +39,7 @@ scrollback-limit = 4294967295
 
 # shell integration
 shell-integration = bash
+
+# clipboard: allow OSC 52 reads (paste-back over SSH) without a prompt.
+# writes (copy) are already allowed by default.
+clipboard-read = allow
