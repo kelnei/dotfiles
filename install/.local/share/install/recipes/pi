@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# shellcheck source=_lib.sh
+source "$(dirname "$0")/_lib.sh"
+
+# pi's release tarball is a directory tree (self-contained binary plus
+# node_modules native addons, wasm, docs) - install the whole tree and
+# symlink the binary into ~/.local/bin
+INSTALL_DIR="$HOME/.local/share/pi"
+BIN_DIR="$HOME/.local/bin"
+TMP_DIR=$(mktemp -d)
+
+echo "Fetching latest pi release..."
+LATEST=$(github_latest earendil-works/pi)
+: "${LATEST:?failed to parse latest release tag}"
+
+echo "Installing pi ${LATEST#v}..."
+github_download earendil-works/pi "$LATEST" "pi-linux-x64.tar.gz" |
+  tar -xz -C "$TMP_DIR"
+rm -rf "$INSTALL_DIR"
+mv "$TMP_DIR/pi" "$INSTALL_DIR"
+rm -rf "$TMP_DIR"
+ln -sf "$INSTALL_DIR/pi" "$BIN_DIR/pi"
+
+echo "pi $("$BIN_DIR/pi" --version) installed to $INSTALL_DIR (symlinked at $BIN_DIR/pi)"

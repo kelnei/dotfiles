@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_lib.sh"
+
+LATEST=$(github_latest earendil-works/pi)
+LATEST="${LATEST#v}"
+
+INSTALLED=$(pi --version 2>/dev/null) || INSTALLED="not installed"
+
+check_version pi "$INSTALLED" "$LATEST"

@@ -37,6 +37,7 @@ CHECKS=(
   claude
   codex
   grok
+  pi
   opencode
   neovim
   ghostty
