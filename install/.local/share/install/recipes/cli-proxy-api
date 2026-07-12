@@ -5,6 +5,7 @@ set -euo pipefail
 source "$(dirname "$0")/_lib.sh"
 
 INSTALL_DIR="$HOME/.local/bin"
+CONFIG_DIR="$HOME/.cli-proxy-api"
 TMP_DIR=$(mktemp -d)
 
 echo "Installing latest cli-proxy-api..."
@@ -14,8 +15,16 @@ VERSION="${LATEST#v}"
 
 echo "Installing cli-proxy-api ${VERSION}..."
 github_download router-for-me/CLIProxyAPI "$LATEST" "CLIProxyAPI_${VERSION}_linux_amd64.tar.gz" |
-  tar -xz -C "$TMP_DIR" cli-proxy-api
+  tar -xz -C "$TMP_DIR" cli-proxy-api config.example.yaml
 mv "$TMP_DIR/cli-proxy-api" "$INSTALL_DIR/cli-proxy-api"
+
+# keep the example current for diffing after upgrades, but never touch config.yaml
+mkdir -p "$CONFIG_DIR"
+mv "$TMP_DIR/config.example.yaml" "$CONFIG_DIR/config.example.yaml"
+if [ ! -f "$CONFIG_DIR/config.yaml" ]; then
+  cp "$CONFIG_DIR/config.example.yaml" "$CONFIG_DIR/config.yaml"
+  echo "Created $CONFIG_DIR/config.yaml from example - edit it to set api-keys"
+fi
 rm -rf "$TMP_DIR"
 
 # --help exits 0 but keeps writing usage text after the version banner - capture
