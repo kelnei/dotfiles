@@ -38,6 +38,7 @@ directory tree mirrors `$HOME` exactly. Stowing a package creates symlinks in `$
                   ~/.local/share/install/recipes/*, ~/.local/share/install/checks/*
   nvim/        -> ~/.config/nvim/
   starship/    -> ~/.config/starship.toml
+  systemd/     -> ~/.config/systemd/user/*.service
   tmux/        -> ~/.tmux.conf
 ```
 
@@ -48,7 +49,7 @@ stow --dir=$HOME/.dotfiles --target=$HOME <package>
 
 To restow all packages after adding files:
 ```bash
-stow --dir=$HOME/.dotfiles --target=$HOME --restow bash git ghostty install nvim starship tmux
+stow --dir=$HOME/.dotfiles --target=$HOME --restow bash git ghostty install nvim starship systemd tmux
 ```
 
 ---

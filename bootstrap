@@ -2,7 +2,7 @@
 set -euo pipefail
 
 DOTFILES_DIR="$HOME/.dotfiles"
-PACKAGES=(bash ghostty git install nvim starship tmux)
+PACKAGES=(bash ghostty git install nvim starship systemd tmux)
 
 # prompt for sudo once upfront
 sudo -v
