@@ -60,6 +60,7 @@ run claude
 run codex
 run grok
 run pi
+run cli-proxy-api
 
 run opencode
 run neovim

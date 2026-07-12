@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# shellcheck source=_lib.sh
+source "$(dirname "$0")/_lib.sh"
+
+INSTALL_DIR="$HOME/.local/bin"
+TMP_DIR=$(mktemp -d)
+
+echo "Installing latest cli-proxy-api..."
+LATEST=$(github_latest router-for-me/CLIProxyAPI)
+: "${LATEST:?failed to parse latest release tag}"
+VERSION="${LATEST#v}"
+
+echo "Installing cli-proxy-api ${VERSION}..."
+github_download router-for-me/CLIProxyAPI "$LATEST" "CLIProxyAPI_${VERSION}_linux_amd64.tar.gz" |
+  tar -xz -C "$TMP_DIR" cli-proxy-api
+mv "$TMP_DIR/cli-proxy-api" "$INSTALL_DIR/cli-proxy-api"
+rm -rf "$TMP_DIR"
+
+# --help exits 0 but keeps writing usage text after the version banner - capture
+# the full output first so a piped `head -1` can't SIGPIPE it mid-write
+VERSION_OUTPUT=$("$INSTALL_DIR/cli-proxy-api" --help 2>&1)
+echo "cli-proxy-api $(echo "$VERSION_OUTPUT" | head -1) installed to $INSTALL_DIR/cli-proxy-api"

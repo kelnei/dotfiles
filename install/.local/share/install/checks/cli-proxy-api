@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/_lib.sh"
+
+LATEST=$(github_latest router-for-me/CLIProxyAPI)
+LATEST="${LATEST#v}"
+
+# --help exits 0 but keeps writing usage text after the version banner - capture
+# the full output first so a piped `head -1` can't SIGPIPE it mid-write
+OUTPUT=$(cli-proxy-api --help 2>&1) || true
+
+# "CLIProxyAPI Version: 7.2.71, Commit: 5b7f2361, BuiltAt: ..." -> "7.2.71"
+INSTALLED=$(echo "$OUTPUT" | sed -n 's/.*Version: \([^,]*\),.*/\1/p')
+INSTALLED="${INSTALLED:-not installed}"
+
+check_version cli-proxy-api "$INSTALLED" "$LATEST"

@@ -38,6 +38,7 @@ CHECKS=(
   codex
   grok
   pi
+  cli-proxy-api
   opencode
   neovim
   ghostty
