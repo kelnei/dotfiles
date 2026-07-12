@@ -27,6 +27,12 @@ if [ ! -f "$CONFIG_DIR/config.yaml" ]; then
 fi
 rm -rf "$TMP_DIR"
 
+# a running service keeps the old binary until restarted
+if systemctl --user is-active --quiet cli-proxy-api.service 2>/dev/null; then
+  echo "Restarting cli-proxy-api.service..."
+  systemctl --user restart cli-proxy-api.service
+fi
+
 # --help exits 0 but keeps writing usage text after the version banner - capture
 # the full output first so a piped `head -1` can't SIGPIPE it mid-write
 VERSION_OUTPUT=$("$INSTALL_DIR/cli-proxy-api" --help 2>&1)
