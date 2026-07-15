@@ -12,6 +12,7 @@ GUI_RECIPES=(
   brave
   brave-origin
   lmstudio
+  claude-desktop
 )
 
 # tools with both a check and a recipe, in dependency order
@@ -50,6 +51,7 @@ ALL_RECIPES=(
   brave
   brave-origin
   lmstudio
+  claude-desktop
 )
 
 usage() {

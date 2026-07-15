@@ -9,6 +9,7 @@ GUI_CHECKS=(
   brave
   brave-origin
   lmstudio
+  claude-desktop
 )
 
 CHECKS=(
@@ -46,6 +47,7 @@ CHECKS=(
   brave
   brave-origin
   lmstudio
+  claude-desktop
 )
 
 is_gui_check() {

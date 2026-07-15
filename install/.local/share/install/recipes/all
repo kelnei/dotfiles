@@ -69,6 +69,7 @@ run tmux
 run_gui brave
 run_gui brave-origin
 run_gui lmstudio
+run_gui claude-desktop
 
 echo ""
 echo "All tools installed successfully."
