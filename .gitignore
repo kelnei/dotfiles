@@ -1,0 +1,6 @@
+# systemd --user enable writes real symlinks into these dirs. Since ~/.config
+# symlinks straight into this repo (stow tree-folding), those enable symlinks
+# land in the working tree - but they're absolute paths baked to one user's
+# $HOME, so they aren't portable to commit. Recipes call `systemctl --user
+# enable` themselves so this state gets regenerated correctly per machine.
+**/systemd/user/*.wants/

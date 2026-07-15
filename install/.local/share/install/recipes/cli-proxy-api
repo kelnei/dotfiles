@@ -27,8 +27,15 @@ if [ ! -f "$CONFIG_DIR/config.yaml" ]; then
 fi
 rm -rf "$TMP_DIR"
 
+# capture prior state before enable --now changes it
+WAS_ACTIVE=0
+systemctl --user is-active --quiet cli-proxy-api.service 2>/dev/null && WAS_ACTIVE=1
+
+echo "Enabling cli-proxy-api.service..."
+systemctl --user enable --now cli-proxy-api.service
+
 # a running service keeps the old binary until restarted
-if systemctl --user is-active --quiet cli-proxy-api.service 2>/dev/null; then
+if [ "$WAS_ACTIVE" = 1 ]; then
   echo "Restarting cli-proxy-api.service..."
   systemctl --user restart cli-proxy-api.service
 fi
