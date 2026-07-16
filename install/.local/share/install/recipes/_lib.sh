@@ -74,9 +74,9 @@ _have_gh_github() {
 # curl with GITHUB_TOKEN if set, anonymous otherwise
 _curl_github() {
   if [ -n "${GITHUB_TOKEN:-}" ]; then
-    curl -fsSL -H "Authorization: Bearer $GITHUB_TOKEN" "$@"
+    curl -fsSL -H "User-Agent: kelnei" -H "Authorization: Bearer $GITHUB_TOKEN" "$@"
   else
-    curl -fsSL "$@"
+    curl -fsSL -H "User-Agent: kelnei" "$@"
   fi
 }
 

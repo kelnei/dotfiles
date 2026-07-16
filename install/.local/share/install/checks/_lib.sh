@@ -12,9 +12,9 @@ github_api() {
     fi
   fi
   if [ -n "${GITHUB_TOKEN:-}" ]; then
-    curl -fsSL -H "Authorization: Bearer $GITHUB_TOKEN" "https://api.github.com$1" 2>/dev/null
+    curl -fsSL -H "User-Agent: kelnei" -H "Authorization: Bearer $GITHUB_TOKEN" "https://api.github.com$1" 2>/dev/null
   else
-    curl -fsSL "https://api.github.com$1" 2>/dev/null
+    curl -fsSL -H "User-Agent: kelnei" "https://api.github.com$1" 2>/dev/null
   fi
 }
 
