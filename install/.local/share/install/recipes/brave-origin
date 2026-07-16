@@ -4,9 +4,16 @@ set -euo pipefail
 # prompt for sudo credentials upfront
 sudo -v
 
+SOURCES_LIST="/etc/apt/sources.list.d/brave-browser-nightly.sources"
+
+# add brave's apt repository so updates arrive via apt - only needed once,
+# this recipe also runs on every update so don't redo it each time
+if [ ! -f "$SOURCES_LIST" ]; then
+	sudo curl -fsSLo /usr/share/keyrings/brave-browser-nightly-archive-keyring.gpg https://brave-browser-apt-nightly.s3.brave.com/brave-browser-nightly-archive-keyring.gpg
+	sudo curl -fsSLo "$SOURCES_LIST" https://brave-browser-apt-nightly.s3.brave.com/brave-browser.sources
+fi
+
 echo "Installing latest Brave Origin Nightly..."
-sudo curl -fsSLo /usr/share/keyrings/brave-browser-nightly-archive-keyring.gpg https://brave-browser-apt-nightly.s3.brave.com/brave-browser-nightly-archive-keyring.gpg
-sudo curl -fsSLo /etc/apt/sources.list.d/brave-browser-nightly.sources https://brave-browser-apt-nightly.s3.brave.com/brave-browser.sources
 sudo apt update
 sudo apt install -y brave-origin-nightly
 
