@@ -34,11 +34,20 @@ github_latest_tag() {
 # downloads to a temp file first - piping curl straight into an awk that
 # exits early races with curl still writing the rest of the file, which
 # can fail with "curl: (23) Failure writing output to destination"
+# some repos (e.g. claude-desktop) list every version they've ever shipped
+# as separate stanzas, so this collects them all and picks the highest via
+# dpkg's own version comparison rather than trusting file order
 # usage: apt_package_version url package-name
 apt_package_version() {
   TMP=$(mktemp)
   curl -fsSL "$1" -o "$TMP"
-  awk -v pkg="$2" '$0 == "Package: " pkg {FOUND=1} FOUND && /^Version: /{print $2; exit}' "$TMP"
+  BEST=""
+  while IFS= read -r VERSION; do
+    if [ -z "$BEST" ] || dpkg --compare-versions "$VERSION" gt "$BEST"; then
+      BEST="$VERSION"
+    fi
+  done < <(awk -v pkg="$2" '$0 == "Package: " pkg {FOUND=1; next} FOUND && /^Version: /{print $2; FOUND=0}' "$TMP")
+  echo "$BEST"
   rm -f "$TMP"
 }
 
