@@ -208,6 +208,9 @@ export PATH="$HOME/.local/bin:$PATH" # add local bin to PATH
    - Follow the install script pattern above
    - Use `curl -fsSL` and always install the latest version
    - Install binaries to `$HOME/.local/bin` where possible
+   - Never hardcode `amd64`/`x86_64` in download URLs - recipes must also work on
+     arm64 (DGX Spark). Source `_lib.sh` and use `ARCH=$(recipe_arch deb|uname|x64)`
+     to match the upstream asset's naming scheme, verifying the arm64 asset exists
 2. Create a matching check in `install/.local/share/install/checks/<tool>` that
    sources `_lib.sh` and calls `check_version <tool> "$INSTALLED" "$LATEST"` - this
    is what `recipe_install` uses to detect "already installed" and what

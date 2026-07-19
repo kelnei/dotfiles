@@ -6,6 +6,7 @@ source "$(dirname "$0")/_lib.sh"
 
 INSTALL_DIR="$HOME/.local/bin"
 TMP_DIR=$(mktemp -d)
+ARCH=$(recipe_arch deb)
 
 echo "Fetching latest gh release..."
 LATEST=$(github_latest cli/cli)
@@ -13,9 +14,9 @@ LATEST=$(github_latest cli/cli)
 VERSION="${LATEST#v}"
 
 echo "Installing gh $VERSION..."
-github_download cli/cli "$LATEST" "gh_${VERSION}_linux_amd64.tar.gz" |
+github_download cli/cli "$LATEST" "gh_${VERSION}_linux_${ARCH}.tar.gz" |
   tar -xz -C "$TMP_DIR"
-mv "$TMP_DIR/gh_${VERSION}_linux_amd64/bin/gh" "$INSTALL_DIR/gh"
+mv "$TMP_DIR/gh_${VERSION}_linux_${ARCH}/bin/gh" "$INSTALL_DIR/gh"
 rm -rf "$TMP_DIR"
 
 echo "gh $("$INSTALL_DIR/gh" --version | head -1) installed to $INSTALL_DIR/gh"

@@ -61,6 +61,28 @@ require_check() {
   echo "$CHECK"
 }
 
+# print this machine's architecture in the given naming scheme, failing on
+# architectures no recipe supports - usage: ARCH=$(recipe_arch deb|uname|x64)
+#   deb   -> amd64 | arm64     (debian packages, go, most github assets)
+#   uname -> x86_64 | aarch64  (rust target triples, aws, shellcheck)
+#   x64   -> x64 | arm64       (node/electron style: lmstudio, pi)
+recipe_arch() {
+  local machine
+  machine=$(uname -m)
+  case "$1:$machine" in
+  deb:x86_64) echo amd64 ;;
+  uname:x86_64) echo x86_64 ;;
+  x64:x86_64) echo x64 ;;
+  deb:aarch64) echo arm64 ;;
+  uname:aarch64) echo aarch64 ;;
+  x64:aarch64) echo arm64 ;;
+  *)
+    echo "error: unsupported architecture '$machine'" >&2
+    return 1
+    ;;
+  esac
+}
+
 # true if there's no graphical session (no DISPLAY or WAYLAND_DISPLAY)
 is_headless() {
   [ -z "${DISPLAY:-}" ] && [ -z "${WAYLAND_DISPLAY:-}" ]

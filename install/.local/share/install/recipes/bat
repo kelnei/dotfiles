@@ -7,13 +7,15 @@ source "$(dirname "$0")/_lib.sh"
 # prompt for sudo credentials upfront
 sudo -v
 
+ARCH=$(recipe_arch deb)
+
 echo "Fetching latest bat release..."
 LATEST=$(github_latest sharkdp/bat)
 : "${LATEST:?failed to parse latest release tag}"
 VERSION="${LATEST#v}"
 
 echo "Installing bat ${LATEST}..."
-github_download sharkdp/bat "$LATEST" "bat_${VERSION}_amd64.deb" /tmp/bat.deb
+github_download sharkdp/bat "$LATEST" "bat_${VERSION}_${ARCH}.deb" /tmp/bat.deb
 sudo dpkg -i /tmp/bat.deb
 rm /tmp/bat.deb
 

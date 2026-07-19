@@ -8,13 +8,19 @@ INSTALL_DIR="$HOME/.local/bin"
 CONFIG_DIR="$HOME/.cli-proxy-api"
 TMP_DIR=$(mktemp -d)
 
+# upstream names the intel asset linux_amd64 but the arm asset linux_aarch64
+case "$(recipe_arch deb)" in
+amd64) ARCH=amd64 ;;
+arm64) ARCH=aarch64 ;;
+esac
+
 echo "Installing latest cli-proxy-api..."
 LATEST=$(github_latest router-for-me/CLIProxyAPI)
 : "${LATEST:?failed to parse latest release tag}"
 VERSION="${LATEST#v}"
 
 echo "Installing cli-proxy-api ${VERSION}..."
-github_download router-for-me/CLIProxyAPI "$LATEST" "CLIProxyAPI_${VERSION}_linux_amd64.tar.gz" |
+github_download router-for-me/CLIProxyAPI "$LATEST" "CLIProxyAPI_${VERSION}_linux_${ARCH}.tar.gz" |
   tar -xz -C "$TMP_DIR" cli-proxy-api config.example.yaml
 mv "$TMP_DIR/cli-proxy-api" "$INSTALL_DIR/cli-proxy-api"
 

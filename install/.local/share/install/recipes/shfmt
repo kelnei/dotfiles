@@ -5,6 +5,7 @@ set -euo pipefail
 source "$(dirname "$0")/_lib.sh"
 
 INSTALL_DIR="$HOME/.local/bin"
+ARCH=$(recipe_arch deb)
 
 echo "Fetching latest shfmt release..."
 LATEST=$(github_latest mvdan/sh)
@@ -12,7 +13,7 @@ LATEST=$(github_latest mvdan/sh)
 VERSION="${LATEST#v}"
 
 echo "Installing shfmt $VERSION..."
-github_download mvdan/sh "$LATEST" "shfmt_${LATEST}_linux_amd64" "$INSTALL_DIR/shfmt"
+github_download mvdan/sh "$LATEST" "shfmt_${LATEST}_linux_${ARCH}" "$INSTALL_DIR/shfmt"
 chmod +x "$INSTALL_DIR/shfmt"
 
 echo "shfmt $($INSTALL_DIR/shfmt --version) installed to $INSTALL_DIR/shfmt"

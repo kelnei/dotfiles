@@ -6,13 +6,14 @@ source "$(dirname "$0")/_lib.sh"
 
 INSTALL_DIR="$HOME/.local/bin"
 TMP_DIR=$(mktemp -d)
+ARCH=$(recipe_arch uname)
 
 echo "Fetching latest just release..."
 LATEST=$(github_latest casey/just)
 : "${LATEST:?failed to parse latest release tag}"
 
 echo "Installing just $LATEST..."
-github_download casey/just "$LATEST" "just-${LATEST}-x86_64-unknown-linux-musl.tar.gz" |
+github_download casey/just "$LATEST" "just-${LATEST}-${ARCH}-unknown-linux-musl.tar.gz" |
   tar -xz -C "$TMP_DIR"
 mv "$TMP_DIR/just" "$INSTALL_DIR/just"
 rm -rf "$TMP_DIR"

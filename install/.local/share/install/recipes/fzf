@@ -6,6 +6,7 @@ source "$(dirname "$0")/_lib.sh"
 
 INSTALL_DIR="$HOME/.local/bin"
 TMP_DIR=$(mktemp -d)
+ARCH=$(recipe_arch deb)
 
 echo "Fetching latest fzf release..."
 LATEST=$(github_latest junegunn/fzf)
@@ -13,7 +14,7 @@ LATEST=$(github_latest junegunn/fzf)
 VERSION="${LATEST#v}"
 
 echo "Installing fzf $VERSION..."
-github_download junegunn/fzf "$LATEST" "fzf-${VERSION}-linux_amd64.tar.gz" |
+github_download junegunn/fzf "$LATEST" "fzf-${VERSION}-linux_${ARCH}.tar.gz" |
   tar -xz -C "$TMP_DIR"
 mv "$TMP_DIR/fzf" "$INSTALL_DIR/fzf"
 rm -rf "$TMP_DIR"

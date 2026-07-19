@@ -6,6 +6,7 @@ source "$(dirname "$0")/_lib.sh"
 
 INSTALL_DIR="$HOME/.local/bin"
 TMP_DIR=$(mktemp -d)
+ARCH=$(recipe_arch deb)
 
 echo "Fetching latest gopass release..."
 LATEST=$(github_latest gopasspw/gopass)
@@ -13,7 +14,7 @@ LATEST=$(github_latest gopasspw/gopass)
 VERSION="${LATEST#v}"
 
 echo "Installing gopass ${LATEST}..."
-github_download gopasspw/gopass "$LATEST" "gopass-${VERSION}-linux-amd64.tar.gz" |
+github_download gopasspw/gopass "$LATEST" "gopass-${VERSION}-linux-${ARCH}.tar.gz" |
   tar -xz -C "$TMP_DIR"
 mv "$TMP_DIR/gopass" "$INSTALL_DIR/gopass"
 rm -rf "$TMP_DIR"

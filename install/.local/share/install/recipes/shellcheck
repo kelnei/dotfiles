@@ -6,6 +6,7 @@ source "$(dirname "$0")/_lib.sh"
 
 INSTALL_DIR="$HOME/.local/bin"
 TMP_DIR=$(mktemp -d)
+ARCH=$(recipe_arch uname)
 
 echo "Fetching latest shellcheck release..."
 LATEST=$(github_latest koalaman/shellcheck)
@@ -13,7 +14,7 @@ LATEST=$(github_latest koalaman/shellcheck)
 VERSION="${LATEST#v}"
 
 echo "Installing shellcheck $VERSION..."
-github_download koalaman/shellcheck "$LATEST" "shellcheck-${LATEST}.linux.x86_64.tar.xz" |
+github_download koalaman/shellcheck "$LATEST" "shellcheck-${LATEST}.linux.${ARCH}.tar.xz" |
   tar -xJ -C "$TMP_DIR"
 mv "$TMP_DIR/shellcheck-${LATEST}/shellcheck" "$INSTALL_DIR/shellcheck"
 rm -rf "$TMP_DIR"

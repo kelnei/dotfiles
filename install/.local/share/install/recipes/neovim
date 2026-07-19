@@ -30,6 +30,8 @@ make CMAKE_BUILD_TYPE=RelWithDebInfo
 echo "Installing neovim..."
 cd build
 cpack -G DEB
-sudo dpkg -i nvim-linux-x86_64.deb
+# cpack names the package by architecture (nvim-linux-x86_64.deb,
+# nvim-linux-arm64.deb) - the fresh build dir only ever holds one
+sudo dpkg -i nvim-linux-*.deb
 
 echo "nvim $(nvim --version | head -1) installed"

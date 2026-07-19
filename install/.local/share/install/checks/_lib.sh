@@ -30,6 +30,28 @@ github_latest_tag() {
   github_api "/repos/$1/tags?per_page=1" | grep -o '"name": *"[^"]*"' | head -1 | cut -d'"' -f4
 }
 
+# print this machine's architecture in the given naming scheme, failing on
+# architectures no recipe supports - usage: ARCH=$(recipe_arch deb|uname|x64)
+#   deb   -> amd64 | arm64     (debian packages, apt Packages indexes)
+#   uname -> x86_64 | aarch64  (rust target triples)
+#   x64   -> x64 | arm64       (node/electron style: lmstudio)
+recipe_arch() {
+  local machine
+  machine=$(uname -m)
+  case "$1:$machine" in
+  deb:x86_64) echo amd64 ;;
+  uname:x86_64) echo x86_64 ;;
+  x64:x86_64) echo x64 ;;
+  deb:aarch64) echo arm64 ;;
+  uname:aarch64) echo aarch64 ;;
+  x64:aarch64) echo arm64 ;;
+  *)
+    echo "error: unsupported architecture '$machine'" >&2
+    return 1
+    ;;
+  esac
+}
+
 # fetch a package's version from a debian "Packages" index
 # downloads to a temp file first - piping curl straight into an awk that
 # exits early races with curl still writing the rest of the file, which

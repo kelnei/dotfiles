@@ -2,7 +2,8 @@
 set -euo pipefail
 source "$(dirname "$0")/_lib.sh"
 
-LATEST=$(curl -fsSI "https://lmstudio.ai/download/latest/linux/x64?format=deb" | awk -F/ 'tolower($1) == "location: https:" {print $(NF - 1); exit}')
+ARCH=$(recipe_arch x64)
+LATEST=$(curl -fsSI "https://lmstudio.ai/download/latest/linux/${ARCH}?format=deb" | awk -F/ 'tolower($1) == "location: https:" {print $(NF - 1); exit}')
 
 # debian package version uses plus instead of the redirect hyphen
 LATEST="${LATEST/-/+}"

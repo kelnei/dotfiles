@@ -4,16 +4,26 @@ set -euo pipefail
 # shellcheck source=_lib.sh
 source "$(dirname "$0")/_lib.sh"
 
-# prompt for sudo credentials upfront
-sudo -v
+ARCH=$(recipe_arch deb)
 
 echo "Fetching latest ripgrep release..."
 LATEST=$(github_latest BurntSushi/ripgrep)
 : "${LATEST:?failed to parse latest release tag}"
 
 echo "Installing ripgrep ${LATEST}..."
-github_download BurntSushi/ripgrep "$LATEST" "ripgrep_${LATEST}-1_amd64.deb" /tmp/ripgrep.deb
-sudo dpkg -i /tmp/ripgrep.deb
-rm /tmp/ripgrep.deb
+if [ "$ARCH" = amd64 ]; then
+  # prompt for sudo credentials upfront
+  sudo -v
+  github_download BurntSushi/ripgrep "$LATEST" "ripgrep_${LATEST}-1_amd64.deb" /tmp/ripgrep.deb
+  sudo dpkg -i /tmp/ripgrep.deb
+  rm /tmp/ripgrep.deb
+else
+  # upstream ships no arm64 .deb - install the binary from the tarball instead
+  TMP_DIR=$(mktemp -d)
+  github_download BurntSushi/ripgrep "$LATEST" "ripgrep-${LATEST}-aarch64-unknown-linux-gnu.tar.gz" |
+    tar -xz -C "$TMP_DIR"
+  mv "$TMP_DIR/ripgrep-${LATEST}-aarch64-unknown-linux-gnu/rg" "$HOME/.local/bin/rg"
+  rm -rf "$TMP_DIR"
+fi
 
 echo "rg $(rg --version | head -1) installed"

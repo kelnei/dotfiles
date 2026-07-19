@@ -10,13 +10,14 @@ source "$(dirname "$0")/_lib.sh"
 INSTALL_DIR="$HOME/.local/share/pi"
 BIN_DIR="$HOME/.local/bin"
 TMP_DIR=$(mktemp -d)
+ARCH=$(recipe_arch x64)
 
 echo "Fetching latest pi release..."
 LATEST=$(github_latest earendil-works/pi)
 : "${LATEST:?failed to parse latest release tag}"
 
 echo "Installing pi ${LATEST#v}..."
-github_download earendil-works/pi "$LATEST" "pi-linux-x64.tar.gz" |
+github_download earendil-works/pi "$LATEST" "pi-linux-${ARCH}.tar.gz" |
   tar -xz -C "$TMP_DIR"
 rm -rf "$INSTALL_DIR"
 mv "$TMP_DIR/pi" "$INSTALL_DIR"

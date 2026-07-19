@@ -6,15 +6,16 @@ source "$(dirname "$0")/_lib.sh"
 
 INSTALL_DIR="$HOME/.local/bin"
 TMP_DIR=$(mktemp -d)
+ARCH=$(recipe_arch uname)
 
 echo "Installing latest codex..."
 LATEST=$(github_latest openai/codex)
 : "${LATEST:?failed to parse latest release tag}"
 
 echo "Installing codex ${LATEST#rust-v}..."
-github_download openai/codex "$LATEST" "codex-x86_64-unknown-linux-musl.tar.gz" |
+github_download openai/codex "$LATEST" "codex-${ARCH}-unknown-linux-musl.tar.gz" |
   tar -xz -C "$TMP_DIR"
-mv "$TMP_DIR/codex-x86_64-unknown-linux-musl" "$INSTALL_DIR/codex"
+mv "$TMP_DIR/codex-${ARCH}-unknown-linux-musl" "$INSTALL_DIR/codex"
 rm -rf "$TMP_DIR"
 
 echo "codex $("$INSTALL_DIR/codex" --version) installed to $INSTALL_DIR/codex"

@@ -1,15 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# shellcheck source=_lib.sh
+source "$(dirname "$0")/_lib.sh"
+
 ICON_DIR="/usr/share/icons/hicolor/256x256/apps"
 ICON_PATH="$ICON_DIR/lm-studio.png"
 DESKTOP_FILE="/usr/share/applications/lm-studio.desktop"
+ARCH=$(recipe_arch x64)
 
 # prompt for sudo credentials upfront
 sudo -v
 
 echo "Installing latest LM Studio..."
-curl -fsSL -o /tmp/lm-studio.deb "https://lmstudio.ai/download/latest/linux/x64?format=deb"
+curl -fsSL -o /tmp/lm-studio.deb "https://lmstudio.ai/download/latest/linux/${ARCH}?format=deb"
 sudo dpkg -i /tmp/lm-studio.deb
 rm /tmp/lm-studio.deb
 

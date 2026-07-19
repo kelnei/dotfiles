@@ -1,11 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# shellcheck source=_lib.sh
+source "$(dirname "$0")/_lib.sh"
+
+ARCH=$(recipe_arch deb)
+
 # prompt for sudo credentials upfront
 sudo -v
 
 echo "Installing latest 1Password CLI (op)..."
-curl -fsSL "https://downloads.1password.com/linux/debian/amd64/stable/1password-cli-amd64-latest.deb" -o /tmp/op.deb
+curl -fsSL "https://downloads.1password.com/linux/debian/${ARCH}/stable/1password-cli-${ARCH}-latest.deb" -o /tmp/op.deb
 sudo dpkg -i /tmp/op.deb
 rm /tmp/op.deb
 
