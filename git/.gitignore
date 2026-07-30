@@ -74,5 +74,18 @@ target/
 
 *.log
 *.pid
+# Process/daemon lock files. Dependency lockfiles share the extension but must be
+# committed -- `uv sync --locked`, `composer install`, and friends need them, and
+# their absence tends to show up as a broken CI or container build rather than as
+# an obviously missing file.
 *.lock
+!uv.lock
+!poetry.lock
+!pdm.lock
+!Cargo.lock
+!composer.lock
+!Gemfile.lock
+!yarn.lock
+!bun.lock
+!flake.lock
 .cache/
