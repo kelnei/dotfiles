@@ -89,3 +89,5 @@ target/
 !bun.lock
 !flake.lock
 .cache/
+
+**/.claude/settings.local.json
