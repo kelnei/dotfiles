@@ -245,21 +245,36 @@ recipe_update all                 # update everything that's out of date
 
 ## Git Commit Style
 
-- Lowercase imperative present tense: `add`, `remove`, `update`, `fix`, `move`, `switch`
-- Single line only — no commit body
-- No conventional commits prefix (`feat:`, `fix:`, `chore:` etc.)
-- No trailing period
-- Include a brief reason when non-obvious, appended naturally:
+- Conventional Commits subject: `<type>(<scope>): <summary>`
+- Types: `feat`, `fix`, `chore`, `refactor`, `docs`, `build`, `style`
+- Scope is the stow package (`bash`, `git`, `install`) or the tool the change
+  is about (`cli-proxy-api`); omit it only for a change with no single home,
+  such as a lockfile update
+- Summary in lowercase imperative present tense: `add`, `remove`, `update`,
+  `fix`, `move`, `switch`
+- No trailing period; keep the subject under 72 columns
+- Add a body, wrapped at 72 columns, that states the reason, the trade-offs,
+  the affected area, and what was tested. Skip it only when the subject says
+  everything, such as a lockfile update
+- The message must stay useful on its own: no references to temporary files,
+  local URLs, or the process that found the problem
+- Put mechanical changes (formatting, renames, lockfile updates) in their own
+  `chore`, `build`, or `style` commit
 
 ```
 # correct
-add install_fnm script
-move ~/.local/bin to 20-path.sh so it loads before starship prompt init
-switch install_claude to use npm (via fnm node LTS)
+fix(install): send User-Agent header on GitHub API curl requests
+
+GitHub's API rejects requests with an empty User-Agent; curl's default
+already satisfies that, but set an identifiable value explicitly.
+
+# correct, subject only
+chore: update nvim-pack-lock.json
 
 # incorrect
 Add install script for fnm.
-feat: add fnm installation
+add fnm installation
+feat: Add fnm installation.
 ```
 
 ---
