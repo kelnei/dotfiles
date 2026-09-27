@@ -17,3 +17,6 @@ export PATH="$HOME/.opencode/bin:$PATH"
 
 # LM Studio CLI (lms)
 export PATH="$HOME/.lmstudio/bin:$PATH"
+
+# Google Cloud SDK (gcloud, gsutil, bq)
+export PATH="$HOME/.gcloud/bin:$PATH"

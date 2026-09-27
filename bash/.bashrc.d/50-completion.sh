@@ -9,3 +9,8 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+# Google Cloud SDK
+if [ -f "$HOME/.gcloud/completion.bash.inc" ]; then
+  . "$HOME/.gcloud/completion.bash.inc"
+fi
