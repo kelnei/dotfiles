@@ -18,8 +18,8 @@ If a tool requires credentials at runtime, it must read them from outside the re
 that is not tracked here). Never add such files to a stow package.
 
 For shell-level secrets (API keys, tokens), place them in `~/.bashrc.secrets.d/<name>.sh`.
-This directory is created by `10-dirs.sh` and sourced by `15-secrets.sh` on every
-interactive shell startup. It is not tracked by git.
+This directory is created by `01-dirs.sh` and sourced by `03-secrets.sh` on every
+shell startup, interactive or not. It is not tracked by git.
 
 ---
 
@@ -110,18 +110,24 @@ Files are numbered with a two-digit prefix to control load order:
 
 | Prefix | Purpose |
 |---|---|
-| `00` | Guards and prerequisites (interactivity check) |
-| `10` | Shell behavior and directory bootstrap (history, `~/code`, `~/.bashrc.secrets.d`) |
-| `15` | Secrets — sources `~/.bashrc.secrets.d/*.sh` for machine-local secret exports |
-| `20` | Environment setup — PATH exports, env variables, shell options |
+| `01` | Directory bootstrap (`~/code`, `~/.bashrc.secrets.d`) |
+| `02` | PATH exports and env variables |
+| `03` | Secrets — sources `~/.bashrc.secrets.d/*.sh` for machine-local secret exports |
+| `04` | Environment a non-interactive shell also needs (fnm) |
+| `05` | Interactive gate — stops the loop in a non-interactive shell |
+| `10` | History |
+| `20` | Shell options |
 | `30` | Prompt |
-| `40` | Aliases |
-| `50` | Tool integrations (completions, fnm, etc.) |
+| `40` | Aliases and shell functions |
+| `50` | Interactive tool integrations (completions, fzf) |
 | `60+` | Reserved for future tool-specific additions |
+
+Files `01`–`04` run in every shell, including scripts and the non-interactive shells
+that coding agents start. Everything after `05-interactive.sh` is interactive-only.
 
 **Critical ordering rule:** anything that must be on `$PATH` before another file uses it
 must be in a file with a lower prefix number. For example, `~/.local/bin` is added in
-`20-path.sh` so that `30-prompt.sh` can call `starship`.
+`02-path.sh` so that `30-prompt.sh` can call `starship`.
 
 When adding a new tool integration, create a new `.bashrc.d/` file with the appropriate
 prefix rather than modifying an existing file.
@@ -215,7 +221,7 @@ export PATH="$HOME/.local/bin:$PATH" # add local bin to PATH
    sources `_lib.sh` and calls `check_version <tool> "$INSTALLED" "$LATEST"` - this
    is what `recipe_install` uses to detect "already installed" and what
    `recipe_update` uses to detect "update available"
-3. If the tool needs PATH or env vars, add them to `bash/.bashrc.d/20-path.sh`
+3. If the tool needs PATH or env vars, add them to `bash/.bashrc.d/02-path.sh`
 4. If the tool needs shell initialization (e.g. `eval "$(tool init bash)"`), create
    `bash/.bashrc.d/<prefix>-<tool>.sh` with the appropriate numeric prefix
 5. Add the new recipe to the `all` recipe (or `run_gui` if it's a GUI app) in
@@ -281,7 +287,7 @@ feat: Add fnm installation.
 
 ## PATH Conventions
 
-All PATH exports live in `bash/.bashrc.d/20-path.sh`. When adding a new entry:
+All PATH exports live in `bash/.bashrc.d/02-path.sh`. When adding a new entry:
 
 - Prepend to PATH (use `$PATH` at the end) unless load order requires otherwise
 - Use `$HOME` not `~` in exported variables
