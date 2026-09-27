@@ -4,18 +4,45 @@ set -euo pipefail
 # shellcheck source=_lib.sh
 source "$(dirname "$0")/_lib.sh"
 
+# Codex needs its package layout (codex-package.json, the code-mode host, rg,
+# bwrap) beside the binary, so a bare binary in ~/.local/bin fails at launch
+# with "this CLI has no complete local package". Mirror the layout of the
+# official standalone installer: releases/<version>-<target>, a `current`
+# symlink, and ~/.local/bin/codex pointing through it.
 INSTALL_DIR="$HOME/.local/bin"
+STANDALONE_ROOT="${CODEX_HOME:-$HOME/.codex}/packages/standalone"
+TARGET="$(recipe_arch uname)-unknown-linux-musl"
+ASSET="codex-package-${TARGET}.tar.gz"
+CHECKSUMS="codex-package_SHA256SUMS"
+
 TMP_DIR=$(mktemp -d)
-ARCH=$(recipe_arch uname)
+trap 'rm -rf "$TMP_DIR"' EXIT
 
 echo "Installing latest codex..."
 LATEST=$(github_latest openai/codex)
 : "${LATEST:?failed to parse latest release tag}"
+VERSION="${LATEST#rust-v}"
+RELEASE_DIR="$STANDALONE_ROOT/releases/${VERSION}-${TARGET}"
 
-echo "Installing codex ${LATEST#rust-v}..."
-github_download openai/codex "$LATEST" "codex-${ARCH}-unknown-linux-musl.tar.gz" |
-  tar -xz -C "$TMP_DIR"
-mv "$TMP_DIR/codex-${ARCH}-unknown-linux-musl" "$INSTALL_DIR/codex"
-rm -rf "$TMP_DIR"
+echo "Installing codex ${VERSION}..."
+github_download openai/codex "$LATEST" "$ASSET" "$TMP_DIR/$ASSET"
+github_download openai/codex "$LATEST" "$CHECKSUMS" "$TMP_DIR/$CHECKSUMS"
+(cd "$TMP_DIR" && grep -F "  $ASSET" "$CHECKSUMS" | sha256sum -c --quiet -)
 
-echo "codex $("$INSTALL_DIR/codex" --version) installed to $INSTALL_DIR/codex"
+STAGE_DIR="$STANDALONE_ROOT/releases/.staging.${VERSION}-${TARGET}.$$"
+mkdir -p "$STAGE_DIR" "$INSTALL_DIR"
+tar -xzf "$TMP_DIR/$ASSET" -C "$STAGE_DIR"
+ln -sf "bin/codex" "$STAGE_DIR/codex"
+rm -rf "$RELEASE_DIR"
+mv "$STAGE_DIR" "$RELEASE_DIR"
+
+ln -sfn "$RELEASE_DIR" "$STANDALONE_ROOT/current"
+# remove first: ln would otherwise write through an old regular-file binary
+rm -f "$INSTALL_DIR/codex"
+ln -s "$STANDALONE_ROOT/current/bin/codex" "$INSTALL_DIR/codex"
+
+# drop releases other than the one just installed
+find "$STANDALONE_ROOT/releases" -mindepth 1 -maxdepth 1 \
+  ! -name "${VERSION}-${TARGET}" -exec rm -rf {} +
+
+echo "codex $("$INSTALL_DIR/codex" --version) installed to $RELEASE_DIR"
