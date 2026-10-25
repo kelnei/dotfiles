@@ -2,9 +2,12 @@
 set -euo pipefail
 source "$(dirname "$0")/_lib.sh"
 
-LATEST=$(github_latest anomalyco/opencode)
-LATEST="${LATEST#v}"
+# opencode 2 ships from its own update channel - github's latest release is
+# still the opencode 1 line, so it can't be used here
+LATEST=$(curl -fsSL https://opencode.ai/update/api/latest/cli/npm | grep -o '"version": *"[^"]*"' | head -1 | cut -d'"' -f4)
 
-INSTALLED=$("$HOME/.opencode/bin/opencode" --version 2>/dev/null) || INSTALLED="not installed"
+# "opencode v2.1.4" -> "2.1.4"
+INSTALLED=$("$HOME/.opencode/bin/opencode" --version 2>/dev/null | awk '{print $NF}') || INSTALLED="not installed"
+INSTALLED="${INSTALLED#v}"
 
 check_version opencode "$INSTALLED" "$LATEST"

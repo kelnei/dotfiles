@@ -8,7 +8,8 @@ if [ -x "$OPENCODE" ]; then
   "$OPENCODE" upgrade
 else
   echo "Installing latest opencode..."
-  curl -fsSL https://opencode.ai/install | bash
+  # the unversioned installer only installs opencode 1
+  curl -fsSL https://opencode.ai/v2/install | bash
 fi
 
-echo "opencode $("$OPENCODE" --version) installed"
+echo "$("$OPENCODE" --version) installed"
